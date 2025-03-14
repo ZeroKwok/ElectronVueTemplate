@@ -26,8 +26,9 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "env": {
-                "NODE_ENV": "production"
-            }
+                "NODE_ENV": "developmen"
+            },
+            "args": []
         }
     ]
 }
