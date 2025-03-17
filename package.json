@@ -32,12 +32,17 @@
     "@electron/asar": "^3.3.1",
     "@electron/fuses": "^1.8.0",
     "@vitejs/plugin-vue": "^5.2.1",
-    "electron": "35.0.1",
+    "electron": "34.x",
+    "sass-embedded": "^1.85.1",
     "vite": "^5.4.14"
   },
   "dependencies": {
+    "@electron-toolkit/preload": "^3.0.1",
+    "@vscode/codicons": "^0.0.36",
     "electron-squirrel-startup": "^1.0.1",
+    "electron-store": "^10.0.1",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vuex": "^4.0.2"
   }
 }

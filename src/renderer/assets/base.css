@@ -8,6 +8,7 @@
   --vt-c-black-soft: #222222;
   --vt-c-black-mute: #282828;
 
+  /* 靛蓝 */
   --vt-c-indigo: #2c3e50;
 
   --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
@@ -58,13 +59,19 @@
   font-weight: normal;
 }
 
+html {
+  height: 100%;
+  margin: 0;
+}
+
 body {
-  min-height: 100vh;
   color: var(--color-text);
-  background: var(--color-background);
+  background: transparent;
   transition:
     color 0.5s,
     background-color 0.5s;
+  margin: 0;
+  height: 100%;
   line-height: 1.6;
   font-family:
     Inter,

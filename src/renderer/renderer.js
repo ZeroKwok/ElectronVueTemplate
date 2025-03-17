@@ -37,5 +37,3 @@ const app = createApp(App)
 app.use(router)
 
 app.mount('#app')
-
-console.log('👋 This message is being logged by "renderer.js", included via Vite');

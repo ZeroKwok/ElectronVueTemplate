@@ -12,11 +12,19 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    frameless: false,
+    frame: false,
+    transparent: true,
+    backgroundColor: '#00000000',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
+      nodeIntegration: false,
+      contextIsolation: true,
+      webSecurity: false,
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
+
+  // hide menu bar on Microsoft Windows and Linux
+  mainWindow.setMenuBarVisibility(false);
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -26,7 +34,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished

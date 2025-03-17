@@ -1,41 +1,37 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
+  <WindowFrame title="标题栏文本: 内容太大而无法放入指定区域时, 将自动省略">
+    <header>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+    </header>
+    <div class="wrapper">
+      <RouterView />
     </div>
-  </header>
-
-  <RouterView />
+  </WindowFrame>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+// import WindowFrame from './components/WindowFrame.vue'
+import WindowFrame from './components/RoundedWindowFrame.vue'
+</script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+<style lang="scss" scoped>
+
+header {
+  height: 32px;
+  line-height: 1.5;
+  display: flex;
+  place-items: center;
 }
 
 nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
 }
 
 nav a.router-link-exact-active {
@@ -56,30 +52,8 @@ nav a:first-of-type {
   border: 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.wrapper {
+  height: calc(100% -  32px);
 }
+
 </style>
