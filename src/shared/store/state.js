@@ -1,9 +1,12 @@
 
 import vuex from 'vuex';
+import preset from './preset.js';
 
 const store = vuex.createStore({
   state: {
-    settings: window.electron ? await window.electron.ipcRenderer.invoke('getSetting', {}) : {},
+    settings: window.electron
+      ? await window.electron.ipcRenderer.invoke('getSetting', preset.settings)
+      : preset.settings,
   },
   mutations: {
     setTheme(state, theme) {
