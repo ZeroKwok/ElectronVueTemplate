@@ -1,6 +1,11 @@
-import { app, BrowserWindow } from 'electron';
+import { app, session, BrowserWindow } from 'electron';
+import os from 'node:os';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import initIPC from './ipc';
+import settings from '../shared/store/settings'
+import cache from '../shared/store/cache'
+
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -12,8 +17,9 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    frame: false,
-    transparent: true,
+    // frame: false,
+    // transparent: true,
+    resizable: true,
     backgroundColor: '#00000000',
     webPreferences: {
       nodeIntegration: false,
@@ -33,8 +39,15 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
+  // Cache the mainWindow id
+  cache.set("mainWindowId", mainWindow.id)
+
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
+
+  // Install the VUEJS DevTools Extension
+  // https://www.electronjs.org/zh/docs/latest/tutorial/devtools-extension
+  session.defaultSession.loadExtension(path.resolve('plugin/vue.js-devtools/7.7.0_0'));
 };
 
 // This method will be called when Electron has finished
@@ -42,6 +55,9 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
+
+  // Initialize the Main IPC
+  initIPC();
 
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.

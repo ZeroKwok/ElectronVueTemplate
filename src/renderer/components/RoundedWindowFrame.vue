@@ -59,7 +59,7 @@ export default {
       ipcRenderer.send('minimize');
     },
     windowMaxRestore() {
-      ipcRenderer.send('maximizeOrUnmaximize');
+      ipcRenderer.send('maximizeOrRestore');
     },
     windowClose() {
       ipcRenderer.send('close');
