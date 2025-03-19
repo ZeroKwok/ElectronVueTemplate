@@ -1,4 +1,6 @@
 export default {
-    language: 'en',
-    theme: 'light',
+    settings: {
+        theme: 'light',
+        language: 'en',
+    }
 }
