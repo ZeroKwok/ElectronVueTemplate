@@ -1,5 +1,6 @@
 import { app, session, BrowserWindow } from 'electron';
 import os from 'node:os';
+import fs from 'node:fs';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import initIPC from './ipc';
@@ -45,9 +46,11 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 
-  // Install the VUEJS DevTools Extension
+  // Load the Vue DevTools if it exists
   // https://www.electronjs.org/zh/docs/latest/tutorial/devtools-extension
-  session.defaultSession.loadExtension(path.resolve('plugin/vue.js-devtools/7.7.0_0'));
+  const devtools = path.resolve('plugin/vue.js-devtools/7.7.0_0');
+  if (fs.existsSync(devtools))
+    session.defaultSession.loadExtension(devtools);
 };
 
 // This method will be called when Electron has finished
