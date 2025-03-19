@@ -2,17 +2,16 @@ import { app, dialog, ipcMain, BrowserWindow } from 'electron';
 import cache from '../shared/store/cache'
 import settings from '../shared/store/settings'
 
-function initIPC() {
+// 窗口操作相关的 IPC 处理
+function handleWindowOperations() {
     ipcMain.on('minimize', e => {
         const win = BrowserWindow.fromWebContents(e.sender)
-        if (win)
-            win.minimize();
+        if (win) win.minimize();
     });
 
     ipcMain.on('maximizeOrRestore', e => {
         const win = BrowserWindow.fromWebContents(e.sender)
-        if (win)
-            win.isMaximized() ? win.unmaximize() : win.maximize();
+        if (win) win.isMaximized() ? win.unmaximize() : win.maximize();
     });
 
     ipcMain.on('close', e => {
@@ -22,20 +21,16 @@ function initIPC() {
         else if (win)
             win.close();
     });
+}
 
-    ipcMain.on('close', e => {
-        const win = BrowserWindow.fromWebContents(e.sender)
-        if (win.id == cache.get("mainWindowId"))
-            app.quit();
-        else if (win)
-            win.close();
-    });
+// 设置相关的 IPC 处理
+function handleSettingsOperations() {
+    let shouldEmit = true;
 
     ipcMain.handle('getSetting', async (event, defaultValue) => {
         return settings.get('settings', defaultValue)
     });
 
-    let shouldEmit = true;
     ipcMain.handle('setSetting', async (event, value) => {
         shouldEmit = false;
         try {
@@ -45,6 +40,7 @@ function initIPC() {
         }
     });
 
+    // 监听设置变化
     settings.onDidChange('settings', (newValue, oldValue) => {
         if (shouldEmit) {
             BrowserWindow.getAllWindows().forEach(win => {
@@ -52,6 +48,11 @@ function initIPC() {
             });
         }
     });
-};
+}
+
+function initIPC() {
+    handleWindowOperations();
+    handleSettingsOperations();
+}
 
 export default initIPC;
