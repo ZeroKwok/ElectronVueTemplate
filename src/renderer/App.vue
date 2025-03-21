@@ -1,30 +1,43 @@
 <template>
-    <component :is="windowFrameComponent">
-      <header>
-        <nav>
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-        </nav>
-          <label>
-            <input type="checkbox" v-model="useRoundedFrame"/> Toggle Frame
-          </label>
-      </header>
-      <div class="container">
-        <RouterView />
-      </div>
-      </component>
+  <component :is="windowFrameComponent" :title="$t('app.title')">
+    <header>
+      <nav>
+        <RouterLink to="/">{{ $t('home.label') }}</RouterLink>
+        <RouterLink to="/about">{{ $t('about.label') }}</RouterLink>
+      </nav>
+
+      <label>
+        Language:
+        <select v-model="$store.state.settings.language">
+          <option v-for="(locale, code) in localeOptions" :key="code" :value="code">
+            {{ locale.name }}({{ code }})
+          </option>
+        </select>
+      </label>
+
+      <label>
+        <input type="checkbox" v-model="useRoundedFrame" /> {{$t('app.use_rounded_frame')}}
+      </label>
+
+    </header>
+    <div class="container">
+      <RouterView />
+    </div>
+  </component>
 </template>
 
 <script setup>
 import { ref, computed, defineAsyncComponent } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import  i18n  from './i18n';
 
 const useRoundedFrame = ref(false);
 const windowFrameComponent = computed(() => {
   return useRoundedFrame.value
-    ? defineAsyncComponent(() => import('./components/RoundedWindowFrame.vue'))
-    : defineAsyncComponent(() => import('./components/WindowFrame.vue'))
+  ? defineAsyncComponent(() => import('./components/RoundedWindowFrame.vue'))
+  : defineAsyncComponent(() => import('./components/WindowFrame.vue'))
 });
+const localeOptions = i18n.global.index.locales;
 </script>
 
 <style lang="scss" scoped>
@@ -58,6 +71,9 @@ header {
     padding: 0 10px;
     input {
       margin-right: 5px;
+    }
+    select {
+      margin-left: 5px;
     }
   }
 }
