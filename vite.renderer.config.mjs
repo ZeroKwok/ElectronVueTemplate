@@ -12,9 +12,12 @@ export default defineConfig({
           '@': fileURLToPath(new URL('./src/renderer', import.meta.url)),
           '#': fileURLToPath(new URL('./src/shared', import.meta.url))
         },
-      },
+    },
     build: {
-        sourcemap: true
+        sourcemap: true,
+        target: 'es2022', // 设置为支持 top-level await 的环境
+        rollupOptions: {
+        }
     },
     css: {
         preprocessorOptions: {

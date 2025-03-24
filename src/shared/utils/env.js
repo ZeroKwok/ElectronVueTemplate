@@ -1,5 +1,3 @@
-import os from "node:os"
-
 export const environment = process.env.NODE_ENV;
 export const isDevelopment = environment === "development";
 export const releaseChannel = isDevelopment ? "development" : "stable"; // "development" | "beta" | "alpha" | "stable"

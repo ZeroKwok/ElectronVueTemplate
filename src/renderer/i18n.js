@@ -9,6 +9,9 @@ const i18n = createI18n({
     fallbackLocale: 'en',
     messages: {},
 });
+i18n.global.index = { locales: {}, fallbackLocale: 'en', };
+
+const localesPath = store.state.cache.locales ? store.state.cache.locales : './locales';
 
 async function loadLocale(i18n, locale) {
     if (i18n.global.availableLocales.includes(locale))
@@ -19,7 +22,7 @@ async function loadLocale(i18n, locale) {
         throw new Error('Invalid locale');
 
     const file = locales[locale].file;
-    const module = await import(`./locales/${file}`);
+    const module = await import(`${localesPath}/${file}`);
     i18n.global.setLocaleMessage(locale, module.default);
 };
 
@@ -32,7 +35,7 @@ async function setLocale(i18n, locale) {
     return nextTick();
 }
 
-await import('./locales/index.js').then(async (module) => {
+await import(`${localesPath}/index.js`).then(async (module) => {
     const index = module.default;
     i18n.global.index = index;
     i18n.global.fallbackLocale = index.fallbackLocale;

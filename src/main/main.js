@@ -82,3 +82,11 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+// Set the shared cache
+const locales = app.isPackaged ? `${process.resourcesPath}/locales` : './locales';
+
+cache.set('shared', {
+  locales: locales,
+  isPackaged: app.isPackaged,
+});

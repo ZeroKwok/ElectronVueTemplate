@@ -4,12 +4,18 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
+const context = {
+  NODE_ENV: process.env.NODE_ENV
+};
+
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('electron', { ...electronAPI });
+    contextBridge.exposeInMainWorld('electron', electronAPI );
+    contextBridge.exposeInMainWorld('context', context);
   } catch (error) {
     console.error(error)
   }
 } else {
   window.electron = electronAPI
+  window.context = context
 }
