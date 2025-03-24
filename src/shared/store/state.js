@@ -2,11 +2,17 @@
 import vuex from 'vuex';
 import preset from './preset.js';
 
+const cache = window.electron
+  ? await window.electron.ipcRenderer.invoke('get', 'cache', {})
+  : {};
+const settings = window.electron
+  ? await window.electron.ipcRenderer.invoke('get', 'settings', preset.settings)
+  : preset.settings;
+
 const store = vuex.createStore({
   state: {
-    settings: window.electron
-      ? await window.electron.ipcRenderer.invoke('getSetting', preset.settings)
-      : preset.settings,
+    cache: cache,
+    settings: settings,
   },
   mutations: {
     setTheme(state, theme) {
@@ -18,6 +24,9 @@ const store = vuex.createStore({
     setSettings(state, settings) {
       state.settings = settings;
     },
+    setCache(state, cache) {
+      state.cache = cache;
+    },
   },
   actions: {
     updateLanguage({ commit }, language) {
@@ -25,6 +34,9 @@ const store = vuex.createStore({
     },
     updateSettings({ commit }, settings) {
       commit('setSettings', settings);
+    },
+    updateCache({ commit }, cache) {
+      commit('setCache', cache);
     }
   },
 });
@@ -33,13 +45,16 @@ if (window.electron) {
   store.watch(
     (state) => state.settings,
     (newSettings) => {
-      window.electron.ipcRenderer.invoke('setSetting', { ...newSettings });
+      window.electron.ipcRenderer.invoke('set', 'settings', { ...newSettings });
     },
     { deep: true }
   );
 
-  window.electron.ipcRenderer.on('settingsChangeed', (event, settings) => {
-    store.dispatch('updateSettings', settings);
+  window.electron.ipcRenderer.on('changeed', (event, key, value) => {
+    if (key === 'settings')
+      store.dispatch('updateSettings', settings);
+    else if (key === 'cache')
+      store.dispatch('updateCache', value);
   });
 }
 
