@@ -4,7 +4,7 @@
   "engines": {
     "node": "18 || 20"
   },
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "your application description",
   "main": ".vite/build/main.js",
   "scripts": {
@@ -43,9 +43,10 @@
     "@vscode/codicons": "^0.0.36",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.0.1",
+    "semver": "^7.7.1",
     "vue": "3.5.12",
-    "vue-router": "^4.5.0",
     "vue-i18n": "^11.1.2",
+    "vue-router": "^4.5.0",
     "vuex": "^4.0.2"
   }
 }
