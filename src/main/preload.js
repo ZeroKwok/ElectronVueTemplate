@@ -5,7 +5,10 @@ import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 const context = {
-  NODE_ENV: process.env.NODE_ENV
+  env: {
+    NODE_ENV: process.env.NODE_ENV,
+    IS_ELECTRON: true,
+  }
 };
 
 if (process.contextIsolated) {

@@ -1,8 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import constant from '@/constant';
 
+const base = constant.IS_ELECTRON ? null : import.meta.env.BASE_URL;
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(base),
   routes: [
     {
       path: '/',
