@@ -1,18 +1,15 @@
 
 import vuex from 'vuex';
-import preset from './preset.js';
+import preset from './preset';
 
-const cache = window.electron
-  ? await window.electron.ipcRenderer.invoke('get', 'cache', {})
-  : {};
-const settings = window.electron
-  ? await window.electron.ipcRenderer.invoke('get', 'settings', preset.settings)
-  : preset.settings;
+const temp = { settings: preset.settings, cache: {} };
+const state = window.electron
+  ? await window.electron.ipcRenderer.invoke('get', 'state', temp)
+  : temp;
 
 const store = vuex.createStore({
   state: {
-    cache: cache,
-    settings: settings,
+    ...state
   },
   mutations: {
     setTheme(state, theme) {
@@ -52,7 +49,7 @@ if (window.electron) {
 
   window.electron.ipcRenderer.on('changeed', (event, key, value) => {
     if (key === 'settings')
-      store.dispatch('updateSettings', settings);
+      store.dispatch('updateSettings', value);
     else if (key === 'cache')
       store.dispatch('updateCache', value);
   });

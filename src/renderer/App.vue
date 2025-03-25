@@ -8,8 +8,10 @@
 
       <label>
         Language:
-        <select v-model="$store.state.settings.language">
-          <option v-for="(locale, code) in localeOptions" :key="code" :value="code">
+        <select 
+          :value="$store.state.settings.language"
+          @change="$store.dispatch('updateLanguage', $event.target.value)">
+          <option v-for="(locale, code) in i18n.global.index.locales" :key="code" :value="code">
             {{ locale.name }}({{ code }})
           </option>
         </select>
@@ -18,8 +20,8 @@
       <label>
         <input type="checkbox" v-model="useRoundedFrame" /> {{$t('app.use_rounded_frame')}}
       </label>
-
     </header>
+
     <div class="container">
       <RouterView />
     </div>
@@ -37,7 +39,6 @@ const windowFrameComponent = computed(() => {
   ? defineAsyncComponent(() => import('./components/RoundedWindowFrame.vue'))
   : defineAsyncComponent(() => import('./components/WindowFrame.vue'))
 });
-const localeOptions = i18n.global.index.locales;
 </script>
 
 <style lang="scss" scoped>

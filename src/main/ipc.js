@@ -1,5 +1,6 @@
-import { app, dialog, ipcMain, BrowserWindow } from 'electron';
+import { app, ipcMain, BrowserWindow } from 'electron';
 import cache from '../shared/store/cache'
+import preset from '../shared/store/preset';
 import settings from '../shared/store/settings'
 
 // 窗口操作相关的 IPC 处理
@@ -30,8 +31,15 @@ function handleSettingsOperations() {
             return settings.get(key, defaultValue)
         else if (key == 'cache')
             return cache.get('shared', defaultValue);
+        else if (key == 'state') {
+            return {
+                settings: settings.get('settings', preset.settings),
+                cache: cache.get('shared', {}),
+            };
+        }
         else
             console.log('Unknown key: ' + key);
+
         return defaultValue;
     });
 
