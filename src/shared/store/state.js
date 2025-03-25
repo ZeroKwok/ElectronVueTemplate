@@ -39,13 +39,15 @@ const store = vuex.createStore({
 });
 
 if (window.electron) {
-  store.watch(
-    (state) => state.settings,
-    (newSettings) => {
-      window.electron.ipcRenderer.invoke('set', 'settings', { ...newSettings });
-    },
-    { deep: true }
-  );
+  ['settings', 'cache'].forEach((key) => {
+    store.watch(
+      (state) => state[key],
+      (newValue) => {
+        window.electron.ipcRenderer.invoke('set', key, { ...newValue });
+      },
+      { deep: true }
+    );
+  });
 
   window.electron.ipcRenderer.on('changeed', (event, key, value) => {
     if (key === 'settings')
