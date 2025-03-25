@@ -25,7 +25,7 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      webSecurity: false,
+      webSecurity: true,
       preload: path.join(__dirname, 'preload.js')
     }
   });
