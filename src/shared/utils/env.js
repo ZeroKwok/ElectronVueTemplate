@@ -15,6 +15,9 @@ export const isMacOS     = process.platform === "darwin";
 export const isWindows   = process.platform === "win32";
 export const isLinux     = process.platform === "linux";
 
+console.log('shared/utils/env: ', 
+    { appName, version, prerelease, isDev, isElectron, isMacOS, isWindows, isLinux });
+
 export default {
     isDev,
     isElectron,
