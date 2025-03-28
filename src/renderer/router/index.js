@@ -7,7 +7,8 @@ const router = createRouter({
   history: createWebHashHistory(base),
   routes: [
     {
-      path: '/',
+      path: '/home',
+      alias: '/',
       name: 'home',
       component: HomeView,
     },
