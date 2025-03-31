@@ -1,6 +1,8 @@
 export default {
     app: {
         title: 'Vue.js + Electron 应用程序',
+        back: '返回',
+        language: '语言:',
         use_rounded_frame: '使用圆角边框',
     },
     home: {
