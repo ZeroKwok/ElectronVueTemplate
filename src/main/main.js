@@ -6,7 +6,7 @@ import started from 'electron-squirrel-startup';
 import initIPC from './ipc';
 import settings from '../shared/store/settings'
 import cache from '../shared/store/cache'
-
+import windowStateKeeper from '../shared/utils/window-state.js';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -14,12 +14,21 @@ if (started) {
 }
 
 const createWindow = () => {
+
+  // Load the previous state with fallback to defaults
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 800,
+    defaultHeight: 600
+  });
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    // frame: false,
-    // transparent: true,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    frame: false,
+    transparent: true,
     resizable: true,
     backgroundColor: '#00000000',
     webPreferences: {
@@ -30,7 +39,9 @@ const createWindow = () => {
     }
   });
 
-  // hide menu bar on Microsoft Windows and Linux
+  mainWindowState.manage(mainWindow);
+
+  // Hide menu bar on Microsoft Windows and Linux
   mainWindow.setMenuBarVisibility(false);
 
   // and load the index.html of the app.
