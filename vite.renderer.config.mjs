@@ -4,10 +4,9 @@ import vue from '@vitejs/plugin-vue'
 import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config
-export default defineConfig({
+const config = {
     plugins: [
         vue(),
-        VueDevTools(),
     ],
     resolve: {
         alias: {
@@ -28,4 +27,10 @@ export default defineConfig({
             }
         }
     }
-});
+};
+
+if (process.env.NODE_ENV == 'development') {
+    config.plugins.push(VueDevTools());
+}
+
+export default defineConfig(config);

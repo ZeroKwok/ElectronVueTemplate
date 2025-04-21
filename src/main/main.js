@@ -54,14 +54,16 @@ const createWindow = () => {
   // Cache the mainWindow id
   cache.set("mainWindowId", mainWindow.id)
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if (process.env.NODE_ENV === 'development') {
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
 
-  // Load the Vue DevTools if it exists
-  // https://www.electronjs.org/zh/docs/latest/tutorial/devtools-extension
-  const devtools = path.resolve('plugin/vue.js-devtools/7.7.0_0');
-  if (fs.existsSync(devtools))
-    session.defaultSession.loadExtension(devtools);
+    // Load the Vue DevTools if it exists
+    // https://www.electronjs.org/zh/docs/latest/tutorial/devtools-extension
+    const devtools = path.resolve('plugin/vue.js-devtools/7.7.0_0');
+    if (fs.existsSync(devtools))
+      session.defaultSession.loadExtension(devtools);
+  }
 };
 
 // This method will be called when Electron has finished
