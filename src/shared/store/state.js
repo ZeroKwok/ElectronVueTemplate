@@ -43,7 +43,8 @@ if (window.electron) {
     store.watch(
       (state) => state[key],
       (newValue) => {
-        window.electron.ipcRenderer.invoke('set', key, { ...newValue });
+        const value = JSON.parse(JSON.stringify(newValue))
+        window.electron.ipcRenderer.invoke('set', key, value);
       },
       { deep: true }
     );

@@ -54,6 +54,15 @@ const createWindow = () => {
   // Cache the mainWindow id
   cache.set("mainWindowId", mainWindow.id)
 
+  // Listen to the window maximize event
+  mainWindow.on('maximize', () => {
+    cache.set("shared.window.maximized", true);
+  });
+  mainWindow.on('unmaximize', () => {
+    cache.set("shared.window.maximized", false);
+  });
+  cache.set("shared.window.maximized", mainWindow.isMaximized());
+
   if (process.env.NODE_ENV === 'development') {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();

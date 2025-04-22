@@ -1,25 +1,15 @@
 <template>
-  <div class="rounded-window-frame">
+  <div :class="['rounded-window-frame', { maximized: isMaximized }]">
     <div class="window-titlebar">
-       <div class="title">{{ title }}</div>
-       <div class="controls">
-         <div
-             class="button minimize codicon codicon-chrome-minimize"
-             @click="windowMinimize"
-         ></div>
-         <div
-             class="button max-restore codicon"
-             :class="{
-             'codicon-chrome-restore': isMaximized,
-             'codicon-chrome-maximize': !isMaximized,
-             }"
-             @click="windowMaxRestore"
-         ></div>
-         <div
-             class="button close codicon codicon-chrome-close"
-             @click="windowClose"
-         ></div>
-       </div>
+      <div class="title">{{ title }}</div>
+      <div class="controls">
+        <div class="button minimize codicon codicon-chrome-minimize" @click="windowMinimize"></div>
+        <div class="button max-restore codicon" :class="{
+          'codicon-chrome-restore': isMaximized,
+          'codicon-chrome-maximize': !isMaximized,
+        }" @click="windowMaxRestore"></div>
+        <div class="button close codicon codicon-chrome-close" @click="windowClose"></div>
+      </div>
     </div>
     <div class="container">
       <slot>客户区域</slot>
@@ -27,45 +17,34 @@
   </div>
 </template>
 
-<script>
+<script setup>
 // icons by https://github.com/microsoft/vscode-codicons
 import '@vscode/codicons/dist/codicon.css';
+import { watch, computed } from 'vue';
+import store from '#/store/state.js';
 
-const ipcRenderer =
-  window.electron ? window.electron.ipcRenderer : null;
+const ipcRenderer = window.electron ? window.electron.ipcRenderer : null;
 
-export default {
-  name: 'Win32Titlebar',
-  props: {
-    title: {
-      type: String,
-      default: 'Win32Titlebar',
-    },
+defineProps({
+  title: {
+    type: String,
+    default: 'Win32Titlebar',
   },
-  data() {
-    return {
-      isMaximized: false,
-    };
-  },
-  created() {
-    if (ipcRenderer) {
-      ipcRenderer.on('isMaximized', (_, value) => {
-        this.isMaximized = value;
-      });
-    }
-  },
-  methods: {
-    windowMinimize() {
-      ipcRenderer.send('minimize');
-    },
-    windowMaxRestore() {
-      ipcRenderer.send('maximizeOrRestore');
-    },
-    windowClose() {
-      ipcRenderer.send('close');
-    },
-  },
-};
+});
+
+const isMaximized = computed(() => store.state.cache?.window?.maximized || false);
+
+function windowMinimize() {
+  ipcRenderer?.send('minimize');
+}
+
+function windowMaxRestore() {
+  ipcRenderer?.send('maximizeOrRestore');
+}
+
+function windowClose() {
+  ipcRenderer?.send('close');
+}
 </script>
 
 <style lang="scss" scoped>
@@ -78,6 +57,7 @@ export default {
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.6);
   border-radius: var(--window-border-radius);
   background: var(--color-background);
+
   .window-titlebar {
     color: var(--color-text);
     display: flex;
@@ -86,6 +66,7 @@ export default {
     -webkit-app-region: drag;
     --hover: #e6e6e6;
     --active: #cccccc;
+
     .title {
       padding: 8px 12px;
       font-size: 12px;
@@ -94,12 +75,14 @@ export default {
       overflow: hidden;
       white-space: nowrap;
     }
+
     .controls {
       height: 100%;
       margin-left: auto;
       justify-content: flex-end;
       align-items: start;
       display: flex;
+
       .button {
         height: 100%;
         width: 46px;
@@ -108,12 +91,15 @@ export default {
         justify-content: center;
         align-items: center;
         -webkit-app-region: no-drag;
+
         &:hover {
           background: var(--hover);
         }
+
         &:active {
           background: var(--active);
         }
+
         &.close {
           border-top-right-radius: var(--window-border-radius);
 
@@ -121,6 +107,7 @@ export default {
             background: #c42c1b;
             color: rgba(255, 255, 255, 0.8);
           }
+
           &:active {
             background: #f1707a;
             color: #000;
@@ -129,11 +116,25 @@ export default {
       }
     }
   }
+
   .container {
     height: calc(100% - 32px);
     border-bottom-left-radius: var(--window-border-radius);
     border-bottom-right-radius: var(--window-border-radius);
     overflow: hidden;
+  }
+
+  &.maximized {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+
+    .window-titlebar .controls .close {
+      border-top-right-radius: 0;
+    }
   }
 }
 
