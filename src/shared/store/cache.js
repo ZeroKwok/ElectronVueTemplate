@@ -1,51 +1,67 @@
+import { isDeepStrictEqual } from 'node:util';
+import { getProperty, hasProperty, setProperty, deleteProperty, } from 'dot-prop';
+
 class Cache {
   constructor() {
-    this._store = new Map();
-    this._listeners = new Map();
+    this._store = {};
+    this._events = new EventTarget();
+  }
+
+  has(key) {
+    return hasProperty(this._store, key);
   }
 
   set(key, value) {
-    const oldValue = this._store.get(key);
-    if (oldValue === value) 
+    const oldValue = this.get(key, undefined);
+    if (oldValue === value)
       return this;
-    this._store.set(key, value);
-    this._emit('set', key, value, oldValue);
+    setProperty(this._store, key, value);
+    this._change();
     return this;
   }
 
   get(key, defaultValue) {
-    if (this._store.has(key))
-      return this._store.get(key);
-    return defaultValue;
+    return structuredClone(getProperty(this._store, key, defaultValue));
   }
 
   delete(key) {
-    if (this._store.has(key)) {
-      const oldValue = this._store.get(key);
-      this._store.delete(key);
-      this._emit('delete', key, undefined, oldValue);
+    if (this.has(key)) {
+      deleteProperty(this._store, key);
+      this._change();
       return true;
     }
     return false;
   }
 
-  on(event, callback) {
-    if (!this._listeners.has(event))
-      this._listeners.set(event, new Set());
-    this._listeners.get(event).add(callback);
+  clear() {
+    this._store = {};
+    this._change();
     return this;
   }
 
-  off(event, callback) {
-    if (this._listeners.has(event))
-      this._listeners.get(event).delete(callback);
-    return this;
+  onChange(key, callback) {
+    return this._handleChange(() => this.get(key), callback);
   }
 
-  _emit(event, key, value, oldValue) {
-    const listeners = this._listeners.get(event);
-    if (listeners)
-      listeners.forEach(cb => cb(key, value, oldValue));
+  _handleChange(getter, callback) {
+    let currentValue = getter();
+    const onChange = () => {
+      const oldValue = currentValue;
+      const newValue = getter();
+      if (isDeepStrictEqual(newValue, oldValue)) {
+        return;
+      }
+      currentValue = newValue;
+      callback.call(this, newValue, oldValue);
+    };
+    this._events.addEventListener('change', onChange);
+    return () => {
+      this._events.removeEventListener('change', onChange);
+    };
+  }
+
+  _change() {
+    this._events.dispatchEvent(new Event('change'));
   }
 };
 

@@ -63,12 +63,10 @@ function handleSettingsOperations() {
         });
     });
 
-    cache.on('set', (key, value, oldValue) => {
-        if (key === 'shared') {
-            BrowserWindow.getAllWindows().forEach(win => {
-                win.webContents.send('changeed', 'cache', newValue);
-            });
-        }
+    cache.onChange('shared', (newValue, oldValue) => {
+        BrowserWindow.getAllWindows().forEach(win => {
+            win.webContents.send('changeed', 'cache', newValue);
+        });
     });
 }
 
