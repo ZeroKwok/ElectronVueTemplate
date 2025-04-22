@@ -69,14 +69,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rounded-window-frame{
+.rounded-window-frame {
   position: fixed;
   left: 8px;
   top: 8px;
   height: calc(100% - 18px);
   width: calc(100% - 18px);
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.6);
-  border-radius: 15px;
+  border-radius: var(--window-border-radius);
   background: var(--color-background);
   .window-titlebar {
     color: var(--color-text);
@@ -115,7 +115,8 @@ export default {
           background: var(--active);
         }
         &.close {
-          border-top-right-radius: 15px;
+          border-top-right-radius: var(--window-border-radius);
+
           &:hover {
             background: #c42c1b;
             color: rgba(255, 255, 255, 0.8);
@@ -130,8 +131,9 @@ export default {
   }
   .container {
     height: calc(100% - 32px);
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: var(--window-border-radius);
+    border-bottom-right-radius: var(--window-border-radius);
+    overflow: hidden;
   }
 }
 

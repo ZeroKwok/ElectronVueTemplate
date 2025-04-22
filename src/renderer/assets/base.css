@@ -33,8 +33,10 @@
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
-
+  
   --section-gap: 160px;
+  --frame-border-radius: 8px;
+  --window-border-radius: 6px;
 }
 
 @media (prefers-color-scheme: dark) {

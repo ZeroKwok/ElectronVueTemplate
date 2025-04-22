@@ -124,6 +124,7 @@ export default {
   }
   .container {
     height: calc(100% - 32px);
+    overflow: hidden;
   }
 }
 
