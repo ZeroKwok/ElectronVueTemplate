@@ -56,11 +56,10 @@ const canGoBack = ref(false);
 watch(
   () => router.currentRoute.value,
   () => {
-    canGoBack.value = router.options.history.state.back != '/';
+    canGoBack.value = router.options.history.state.back;
   },
   { flush: 'post' }
 );
-
 </script>
 
 <style lang="scss" scoped>
