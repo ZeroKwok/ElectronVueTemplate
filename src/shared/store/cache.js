@@ -21,7 +21,7 @@ class Cache {
   }
 
   get(key, defaultValue) {
-    return structuredClone(getProperty(this._store, key, defaultValue));
+    return getProperty(this._store, key, defaultValue);
   }
 
   delete(key) {
@@ -40,7 +40,7 @@ class Cache {
   }
 
   onChange(key, callback) {
-    return this._handleChange(() => this.get(key), callback);
+    return this._handleChange(() => structuredClone(this.get(key)), callback);
   }
 
   _handleChange(getter, callback) {
