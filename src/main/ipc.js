@@ -29,12 +29,12 @@ function handleSettingsOperations() {
     ipcMain.handle('get', async (event, key, defaultValue) => {
         if (key == 'settings')
             return settings.get(key, defaultValue)
-        else if (key == 'cache')
-            return cache.get('shared', defaultValue);
+        else if (key == 'shared')
+            return cache.get(key, defaultValue);
         else if (key == 'state') {
             return {
                 settings: settings.get('settings', preset.settings),
-                cache: cache.get('shared', {}),
+                shared: cache.get('shared', {}),
             };
         }
         else
@@ -47,8 +47,8 @@ function handleSettingsOperations() {
         try {
             if (key == 'settings')
                 settings.set(key, value);
-            else if (key == 'cache')
-                cache.set('shared', value);
+            else if (key == 'shared')
+                cache.set(key, value);
             else
                 console.log('Unknown key: ' + key);
         } catch (e) {
@@ -65,7 +65,7 @@ function handleSettingsOperations() {
 
     cache.onChange('shared', (newValue, oldValue) => {
         BrowserWindow.getAllWindows().forEach(win => {
-            win.webContents.send('changeed', 'cache', newValue);
+            win.webContents.send('changeed', 'shared', newValue);
         });
     });
 }

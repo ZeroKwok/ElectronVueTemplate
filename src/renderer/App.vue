@@ -14,7 +14,7 @@
         <label>
           {{ $t('app.language') }}
           <select :value="$store.state.settings.language"
-            @change="$store.dispatch('updateLanguage', $event.target.value)">
+            @change="$store.dispatch('update', { key: 'settings.language', value: $event.target.value })">
             <option v-for="(locale, code) in i18n.global.index.locales" :key="code" :value="code">
               {{ locale.name }}({{ code }})
             </option>

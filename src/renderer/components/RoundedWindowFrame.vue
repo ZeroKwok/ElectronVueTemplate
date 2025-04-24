@@ -32,7 +32,7 @@ defineProps({
   },
 });
 
-const isMaximized = computed(() => store.state.cache?.window?.maximized || false);
+const isMaximized = computed(() => store.state.shared?.window?.maximized || false);
 
 function windowMinimize() {
   ipcRenderer?.send('minimize');

@@ -1,8 +1,9 @@
 
 import vuex from 'vuex';
 import preset from './preset';
+import { setProperty } from 'dot-prop';
 
-const temp = { settings: preset.settings, cache: {} };
+const temp = { settings: preset.settings, shared: { } };
 const state = window.electron
   ? await window.electron.ipcRenderer.invoke('get', 'state', temp)
   : temp;
@@ -12,34 +13,19 @@ const store = vuex.createStore({
     ...state
   },
   mutations: {
-    setTheme(state, theme) {
-      state.settings.theme = theme;
-    },
-    setLanguage(state, language) {
-      state.settings.language = language;
-    },
-    setSettings(state, settings) {
-      state.settings = settings;
-    },
-    setCache(state, cache) {
-      state.cache = cache;
-    },
+    set(state, {key, value}) {
+      setProperty(state, key, value);
+    }
   },
   actions: {
-    updateLanguage({ commit }, language) {
-      commit('setLanguage', language);
-    },
-    updateSettings({ commit }, settings) {
-      commit('setSettings', settings);
-    },
-    updateCache({ commit }, cache) {
-      commit('setCache', cache);
+    update({ commit }, option) {
+      commit('set', option);
     }
   },
 });
 
 if (window.electron) {
-  ['settings', 'cache'].forEach((key) => {
+  ['settings', 'shared'].forEach((key) => {
     store.watch(
       (state) => state[key],
       (newValue) => {
@@ -51,10 +37,8 @@ if (window.electron) {
   });
 
   window.electron.ipcRenderer.on('changeed', (event, key, value) => {
-    if (key === 'settings')
-      store.dispatch('updateSettings', value);
-    else if (key === 'cache')
-      store.dispatch('updateCache', value);
+    if (['settings', 'shared'].includes(key))
+      store.dispatch('update', { key, value });
   });
 }
 
