@@ -17,6 +17,7 @@ const writeCopyright = async (config, packageResult) => {
 module.exports = {
   packagerConfig: {
     asar: true,
+    icon: "src/main.ico",
     extraResource: [
       "src/renderer/locales"
     ],
@@ -30,7 +31,13 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        // An URL to an ICO file to use as the application icon (displayed in Control Panel > Programs and Features).
+        iconUrl: 'https://www.electronjs.org/assets/img/favicon.ico',
+
+        // The ICO file to use as the icon for the generated Setup.exe
+        setupIcon: 'src/setup.ico'
+      },
     },
     {
       name: '@electron-forge/maker-zip',
