@@ -36,6 +36,7 @@
     "@vitejs/plugin-vue": "^5.2.1",
     "electron": "34.5.1",
     "electron-devtools-installer": "^4.0.0",
+    "rcedit": "^4.0.1",
     "sass-embedded": "^1.85.1",
     "vite": "^5.4.14",
     "vite-plugin-vue-devtools": "^7.7.2"
