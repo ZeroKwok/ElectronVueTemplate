@@ -1,5 +1,18 @@
+const fs = require('fs');
+const path = require('path');
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
+const rcedit = require('rcedit');
+const pkg = require('./package.json');
+
+const writeCopyright = async (config, packageResult) => {
+  const exePath = path.join(packageResult.outputPaths[0], `${pkg.productName}.exe`)
+  await rcedit(exePath, {
+    'version-string': {
+      LegalCopyright: pkg.copyright || 'Copyright (c) 2025 default'
+    }
+  });
+};
 
 module.exports = {
   packagerConfig: {
@@ -7,6 +20,11 @@ module.exports = {
     extraResource: [
       "src/renderer/locales"
     ],
+  },
+  hooks: {
+    postPackage: async (config, packageResult) => {
+      await writeCopyright(config, packageResult);
+    },
   },
   rebuildConfig: {},
   makers: [
