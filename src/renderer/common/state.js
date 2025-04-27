@@ -1,6 +1,6 @@
 
 import vuex from 'vuex';
-import preset from './preset';
+import preset from '#/store/preset.js';
 import { setProperty } from 'dot-prop';
 
 const temp = { settings: preset.settings, shared: { } };

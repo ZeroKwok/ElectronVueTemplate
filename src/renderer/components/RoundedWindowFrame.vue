@@ -21,7 +21,7 @@
 // icons by https://github.com/microsoft/vscode-codicons
 import '@vscode/codicons/dist/codicon.css';
 import { watch, computed } from 'vue';
-import store from '#/store/state.js';
+import store from '@/common/state.js';
 
 const ipcRenderer = window.electron ? window.electron.ipcRenderer : null;
 

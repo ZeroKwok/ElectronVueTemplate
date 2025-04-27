@@ -1,7 +1,7 @@
 
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n';
-import store from '#/store/state.js';
+import store from '@/common/state.js';
 
 const i18n = createI18n({
     legacy: false,
