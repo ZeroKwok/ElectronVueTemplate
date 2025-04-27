@@ -14,7 +14,6 @@ if (started) {
 }
 
 const createWindow = () => {
-
   // Load the previous state with fallback to defaults
   let mainWindowState = windowStateKeeper({
     defaultWidth: 800,
@@ -31,6 +30,7 @@ const createWindow = () => {
     transparent: true,
     resizable: true,
     backgroundColor: '#00000000',
+    icon: path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/assets/icon.png`),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -110,5 +110,5 @@ const locales = app.isPackaged ? `${process.resourcesPath}/locales` : './locales
 
 cache.set('shared', {
   locales: locales,
-  isPackaged: app.isPackaged,
+  packaged: app.isPackaged,
 });
