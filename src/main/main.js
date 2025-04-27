@@ -7,11 +7,22 @@ import initIPC from './ipc';
 import settings from '../shared/store/settings'
 import cache from '../shared/store/cache'
 import windowStateKeeper from '../shared/utils/window-state.js';
+import { logger } from './logger.js';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
+
+logger.info('');
+logger.info('Starting application...');
+logger.info(' - OS:', os.platform(), os.release(), os.arch(), os.cpus()[0].model);
+logger.info(' - APP:', app.getName(), app.getVersion());
+logger.info(' - Node:', process.versions.node);
+logger.info(' - Electron:', process.versions.electron);
+logger.info(' - Chrome:', process.versions.chrome);
+logger.info(' - NODE_ENV:', process.env.NODE_ENV);
+logger.info(' - Environment:', process.env);
 
 const createWindow = () => {
   // Load the previous state with fallback to defaults
