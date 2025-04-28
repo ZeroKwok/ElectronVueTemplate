@@ -9,7 +9,7 @@
   "description": "your application description",
   "main": ".vite/build/main.js",
   "urls": {
-    "update": "http://localhost:5001/api/v1/update/vlocation"
+    "update": "http://localhost:5001/api/v1/update/YourProductName"
   },
   "scripts": {
     "dev": "vite dev --config vite.renderer.config.mjs",
@@ -46,12 +46,10 @@
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
-    "@element-plus/icons-vue": "^2.3.1",
     "@vscode/codicons": "^0.0.36",
     "electron-log": "^5.3.4",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.0.1",
-    "element-plus": "^2.9.7",
     "lodash-es": "^4.17.21",
     "semver": "^7.7.1",
     "vue": "3.5.12",
