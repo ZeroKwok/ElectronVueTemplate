@@ -1,4 +1,4 @@
-import { app, session, BrowserWindow } from 'electron';
+import { app, session, BrowserWindow, dialog } from 'electron';
 import os from 'node:os';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -123,8 +123,20 @@ app.on('window-all-closed', () => {
 const locales = app.isPackaged ? `${process.resourcesPath}/locales` : './locales';
 
 cache.set('shared', {
-  locales: locales,
-  packaged: app.isPackaged,
+  os: {
+    name: os.hostname(),
+    type: os.type(),
+    arch: os.arch(),
+    release: os.release(),
+    platform: os.platform(),
+  },
+  app: {
+    name: app.getName(),
+    version: app.getVersion(),
+    locales: locales,
+    packaged: app.isPackaged,
+  },
+  versions: {...process.versions}
 });
 // Initialize the auto updater in production mode, otherwise it will throw an error
 // when trying to check for updates in development mode.
