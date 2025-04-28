@@ -7,6 +7,8 @@ import initIPC from './ipc';
 import settings from '../shared/store/settings'
 import cache from '../shared/store/cache'
 import windowStateKeeper from '../shared/utils/window-state.js';
+import updater from './updater.js';
+import { getPackage } from '../shared/utils/package.js';
 import { logger } from './logger.js';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -24,6 +26,7 @@ logger.info(' - Chrome:', process.versions.chrome);
 logger.info(' - NODE_ENV:', process.env.NODE_ENV);
 logger.info(' - Environment:', process.env);
 
+const pkg = getPackage();
 const createWindow = () => {
   // Load the previous state with fallback to defaults
   let mainWindowState = windowStateKeeper({
@@ -123,3 +126,34 @@ cache.set('shared', {
   locales: locales,
   packaged: app.isPackaged,
 });
+// Initialize the auto updater in production mode, otherwise it will throw an error
+// when trying to check for updates in development mode.
+if (process.env.NODE_ENV !== 'development') {
+  // recommend: 
+  // `${pkg.urls.update}/${process.platform}/${process.arch}/${app.getVersion()}`
+  updater.init(`${pkg.urls.update}/${process.platform}/${process.arch}`, {});
+  updater.start();
+  updater.on('error', (err) => {
+    logger.error('Updater error:', err);
+  });
+
+  updater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    logger.info('Update downloaded:', releaseName, releaseNotes);
+
+    const dialogOpts = {
+      type: 'info',
+      buttons: ['Restart', 'Later'],
+      title: 'Application Update',
+      message: process.platform === 'win32' ? releaseNotes : releaseName,
+      detail:
+        'A new version has been downloaded. Starta om applikationen för att verkställa uppdateringarna.'
+    }
+
+    dialog.showMessageBox(dialogOpts).then((returnValue) => {
+      if (returnValue.response === 0) {
+        logger.info('Restarting application.');
+        updater.quitAndInstall()
+      }
+    })
+  })
+}

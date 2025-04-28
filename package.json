@@ -8,6 +8,9 @@
   "copyright": "Copyright (c) 2025 your-name",
   "description": "your application description",
   "main": ".vite/build/main.js",
+  "urls": {
+    "update": "http://localhost:5001/api/v1/update/vlocation"
+  },
   "scripts": {
     "dev": "vite dev --config vite.renderer.config.mjs",
     "start": "electron-forge start",
