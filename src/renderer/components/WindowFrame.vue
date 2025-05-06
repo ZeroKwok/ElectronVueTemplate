@@ -22,50 +22,38 @@
        </div>
     </div>
     <div class="container">
-      <slot>客户区域</slot>
+      <slot>Client Area</slot>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 // icons by https://github.com/microsoft/vscode-codicons
 import '@vscode/codicons/dist/codicon.css';
+import { computed } from 'vue';
+import store from '@/common/state.js';
 
-const ipcRenderer =
-  window.electron ? window.electron.ipcRenderer : null;
+const ipcRenderer = window.electron ? window.electron.ipcRenderer : null;
+const isMaximized = computed(() => store.state.shared?.window?.maximized || false);
 
-export default {
-  name: 'Win32Titlebar',
-  props: {
-    title: {
-      type: String,
-      default: 'Win32Titlebar',
-    },
+defineProps({
+  title: {
+    type: String,
+    default: 'Win32Titlebar',
   },
-  data() {
-    return {
-      isMaximized: false,
-    };
-  },
-  created() {
-    if (ipcRenderer) {
-      ipcRenderer.on('isMaximized', (_, value) => {
-        this.isMaximized = value;
-      });
-    }
-  },
-  methods: {
-    windowMinimize() {
-      ipcRenderer.send('minimize');
-    },
-    windowMaxRestore() {
-      ipcRenderer.send('maximizeOrRestore');
-    },
-    windowClose() {
-      ipcRenderer.send('close');
-    },
-  },
-};
+});
+
+function windowMinimize() {
+  ipcRenderer?.send('minimize');
+}
+
+function windowMaxRestore() {
+  ipcRenderer?.send('maximizeOrRestore');
+}
+
+function windowClose() {
+  ipcRenderer?.send('close');
+}
 </script>
 
 <style lang="scss" scoped>

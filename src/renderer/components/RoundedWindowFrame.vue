@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="container">
-      <slot>客户区域</slot>
+      <slot>Client Area</slot>
     </div>
   </div>
 </template>
@@ -20,10 +20,11 @@
 <script setup>
 // icons by https://github.com/microsoft/vscode-codicons
 import '@vscode/codicons/dist/codicon.css';
-import { watch, computed } from 'vue';
+import { computed } from 'vue';
 import store from '@/common/state.js';
 
 const ipcRenderer = window.electron ? window.electron.ipcRenderer : null;
+const isMaximized = computed(() => store.state.shared?.window?.maximized || false);
 
 defineProps({
   title: {
@@ -31,8 +32,6 @@ defineProps({
     default: 'Win32Titlebar',
   },
 });
-
-const isMaximized = computed(() => store.state.shared?.window?.maximized || false);
 
 function windowMinimize() {
   ipcRenderer?.send('minimize');
