@@ -24,7 +24,7 @@ logger.info(' - Node:', process.versions.node);
 logger.info(' - Electron:', process.versions.electron);
 logger.info(' - Chrome:', process.versions.chrome);
 logger.info(' - NODE_ENV:', process.env.NODE_ENV);
-logger.info(' - Environment:', process.env);
+logger.debug(' - Environment:', process.env);
 
 const pkg = getPackage();
 const createWindow = () => {

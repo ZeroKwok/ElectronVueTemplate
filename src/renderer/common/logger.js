@@ -1,25 +1,28 @@
 import constant from "@/common/constant.js"
 
-let shadow = null
-if (constant.IS_ELECTRON) {
-  shadow = (await import("electron-log/renderer")).default;
-}
-
 class Logger {
   constructor() {
-    this.shadow = shadow
+    this.shadow = null;
+    if (constant.IS_ELECTRON) {
+      import("./electron-log-wrapper.js")
+        .then((module) => {
+          this.shadow = module.default.scope("renderer");
+        })
+    }
   }
 
   write(level, ...args) {
     // console: trace, log, info, warn, error
     // electron-log: silly, debug, verbose, log, info, warn, error
-    if (level === "wran") level = "warn";
-    if (["log", "info", "warn", "error"].includes(level)) {
-      if (this.shadow) {
-        this.shadow[level](...args)
-      }
+    ["trace", "log", "info", "warn", "error"].includes(level) || (level = "log");
+    if (this.shadow)
+      "trace" === level && (level = "debug"), this.shadow[level](...args)
+    else
       console[level](...args)
-    }
+  }
+
+  trace(...args) {
+    this.write("trace", ...args)
   }
 
   info(...args) {
