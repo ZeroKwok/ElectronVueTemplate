@@ -65,8 +65,8 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
-  // Cache the mainWindow id
-  cache.set("mainWindowId", mainWindow.id)
+  // Cache the mainWindow
+  cache.set("mainWindow", mainWindow)
 
   // Listen to the window maximize event
   mainWindow.on('maximize', () => {

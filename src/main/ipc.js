@@ -17,7 +17,8 @@ function handleWindowOperations() {
 
     ipcMain.on('close', e => {
         const win = BrowserWindow.fromWebContents(e.sender)
-        if (win.id == cache.get("mainWindowId"))
+        const main = cache.get("mainWindow")
+        if (main && win.id == main.id)
             app.quit();
         else if (win)
             win.close();

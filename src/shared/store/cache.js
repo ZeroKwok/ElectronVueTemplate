@@ -20,7 +20,7 @@ class Cache {
     return this;
   }
 
-  get(key, defaultValue) {
+  get(key, defaultValue=undefined) {
     return getProperty(this._store, key, defaultValue);
   }
 
