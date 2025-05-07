@@ -11,8 +11,14 @@ import updater from './updater.js';
 import { getPackage } from '../shared/utils/package.js';
 import { logger } from './logger.js';
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (started) {
+const gotTheLock = app.requestSingleInstanceLock();
+
+// 1. Handle creating/removing shortcuts on Windows when installing/uninstalling.
+// 2. On Windows, if the app is already running, we don't want to start a new instance.
+if (started || !gotTheLock) {
+  logger.info('exiting, because another instance is running or it is a squirrel startup event');
+  logger.info(' - SquirrelStarted:', started);
+  logger.info(' - SingleInstanceLock:', gotTheLock);
   app.quit();
 }
 
@@ -40,6 +46,8 @@ const createWindow = () => {
     y: mainWindowState.y,
     width: mainWindowState.width,
     height: mainWindowState.height,
+    minWidth: 450,
+    minHeight: 300,
     frame: false,
     transparent: true,
     resizable: true,
@@ -88,6 +96,18 @@ const createWindow = () => {
       session.defaultSession.loadExtension(devtools);
   }
 };
+
+app.on('second-instance', (event, commandLine, workingDirectory, additionalData) => {
+  // Print out data received from the second instance.
+  logger.info('The second instance has running, data: ', additionalData)
+
+  // Someone tried to run a second instance, we should focus our window.
+  const win = cache.get("mainWindow")
+  if (win) {
+    if (win.isMinimized()) win.restore()
+      win.focus()
+  }
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
