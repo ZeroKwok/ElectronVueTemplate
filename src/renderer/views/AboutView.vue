@@ -20,11 +20,14 @@ export default {
       const { app, versions, os } = this.$store.state.shared
       return {
         'Version': app.version,
-        'Electron': versions.electron,
-        'Chrome': versions.chrome,
-        'Node.js': versions.node,
-        'V8': versions.v8,
-        'OS': `${os.type} ${os.arch} ${os.release}`
+        ...(versions ?
+          {
+            'Electron': versions?.electron,
+            'Chrome': versions?.chrome,
+            'Node.js': versions?.node,
+            'V8': versions?.v8
+          } : {}),
+        ...(os ? { 'OS': `${os.type} ${os.arch} ${os.release}` } : {})
       }
     }
   }

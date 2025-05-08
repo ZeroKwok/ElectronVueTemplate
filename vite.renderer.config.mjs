@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import VueDevTools from 'vite-plugin-vue-devtools'
+import pkg from './package.json'
 
 // https://vitejs.dev/config
 const config = {
@@ -26,7 +27,11 @@ const config = {
                 api: "modern"
             }
         }
-    }
+    },
+    define: {
+        '__APP_VERSION__': JSON.stringify(pkg.version),
+        '__APP_NAME__': JSON.stringify(pkg.productName),
+    },
 };
 
 if (process.env.NODE_ENV == 'development') {

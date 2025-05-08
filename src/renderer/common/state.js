@@ -3,10 +3,9 @@ import vuex from 'vuex';
 import preset from '#/store/preset.js';
 import { setProperty } from 'dot-prop';
 
-const temp = { settings: preset.settings, shared: { } };
 const state = window.electron
-  ? await window.electron.ipcRenderer.invoke('get', 'state', temp)
-  : temp;
+  ? await window.electron.ipcRenderer.invoke('get', 'state', preset)
+  : preset;
 
 const store = vuex.createStore({
   state: {
