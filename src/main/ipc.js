@@ -24,14 +24,28 @@ function handleWindowOperations() {
             win.close();
     });
 
+    // The show dialog options refer to:
+    // https://www.electronjs.org/docs/latest/api/dialog
     ipcMain.handle('openDialog', async (e, options) => {
         let targetWindow = BrowserWindow.fromWebContents(e.sender)
-        if (!targetWindow) {
+        if (!targetWindow)
             targetWindow = cache.get("mainWindow");
-        }
-
-        // https://www.electronjs.org/docs/latest/api/dialog
         return dialog.showOpenDialog(targetWindow, { ...options });
+    });
+
+    ipcMain.handle('saveDialog', async (e, options) => {
+        let targetWindow = BrowserWindow.fromWebContents(e.sender)
+        if (!targetWindow)
+            targetWindow = cache.get("mainWindow");
+        return dialog.showSaveDialog(targetWindow, { ...options });
+    });
+
+    ipcMain.handle('messageBox', async (e, options) => {
+        let targetWindow = BrowserWindow.fromWebContents(e.sender)
+        if (!targetWindow)
+            targetWindow = cache.get("mainWindow");
+
+        return dialog.showMessageBox(targetWindow, { ...options });
     });
 }
 
