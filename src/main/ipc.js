@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow } from 'electron';
+import { app, ipcMain, BrowserWindow, dialog } from 'electron';
 import cache from '../shared/store/cache'
 import preset from '../shared/store/preset';
 import settings from '../shared/store/settings'
@@ -22,6 +22,16 @@ function handleWindowOperations() {
             app.quit();
         else if (win)
             win.close();
+    });
+
+    ipcMain.handle('openDialog', async (e, options) => {
+        let targetWindow = BrowserWindow.fromWebContents(e.sender)
+        if (!targetWindow) {
+            targetWindow = cache.get("mainWindow");
+        }
+
+        // https://www.electronjs.org/docs/latest/api/dialog
+        return dialog.showOpenDialog(targetWindow, { ...options });
     });
 }
 
