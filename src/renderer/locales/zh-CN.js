@@ -2,15 +2,28 @@ export default {
     app: {
         title: 'Vue.js + Electron 应用程序',
         back: '返回',
-        language: '语言:',
-        use_rounded_frame: '使用圆角边框',
+        nav: {
+            home: '主页',
+            settings: '设置',
+            about: '关于',
+        },
     },
     home: {
-        label: '首页',
-        text: '欢迎使用Vue.js + Electron应用程序',
+        title: '主页',
+        body: '欢迎使用 Vue.js + Electron 应用程序',
+    },
+    settings: {
+        title: '设置页面',
+        theme: '主题：',
+        themeOptions: {
+            light: '明亮模式',
+            dark: '暗黑模式',
+        },
+        language: '语言：',
+        roundedWindow: '圆角窗口样式：',
     },
     about: {
-        label: '关于',
-        text: '^_^ · Zero',
+        title: '关于页面',
+        body: '^_^ · Zero',
     },
 };

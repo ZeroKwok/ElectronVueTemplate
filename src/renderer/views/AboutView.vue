@@ -1,6 +1,7 @@
 <template>
   <div class="about">
-    <h1 class="title">{{ $store.state.shared.app.name }}</h1>
+    <h1 class="title">{{ $t('about.title') }}</h1>
+    <p class="text">{{ $t('about.body') }}</p>
     
     <div class="info-list">
       <div v-for="(item, key) in versionInfo" :key="key" class="info-item">
@@ -9,7 +10,6 @@
       </div>
     </div>
 
-    <h2 class="text">{{ $t('about.text') }}</h2>
   </div>
 </template>
 
@@ -19,6 +19,7 @@ export default {
     versionInfo() {
       const { app, versions, os } = this.$store.state.shared
       return {
+        'Product': app.name,
         'Version': app.version,
         ...(versions ?
           {
@@ -41,10 +42,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-
+  gap: 0.5rem;
+  
   .info-list {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
@@ -69,10 +70,11 @@ export default {
   }
 
   .text {
-    margin-top: 1.5rem;
+    font-size: 1rem;
+    font-weight: lighter;
     color: #2c3e50;
     text-align: center;
-    font-weight: lighter;
   }
+
 }
 </style>

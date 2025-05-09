@@ -2,15 +2,28 @@ export default {
     app: {
         title: 'Vue.js + Electron application',
         back: 'Back',
-        language: 'Language:',
-        use_rounded_frame: 'Use rounded border',
+        nav: {
+            home: 'Home',
+            settings: 'Settings',
+            about: 'About',
+        },
     },
     home: {
-        label: 'Home',
-        text: 'Welcome to your Vue.js + Electron application',
+        title: 'Home Page',
+        body: 'Welcome to your Vue.js + Electron application',
+    },
+    settings: {
+        title: 'Settings Page',
+        theme: 'Theme:',
+        themeOptions: {
+            light: 'Light',
+            dark: 'Dark',
+        },
+        language: 'Language:',
+        roundedWindow: 'Rounded window style:',
     },
     about: {
-        label: 'About',
-        text: 'Zero · ^_^',
+        title: 'About Page',
+        body: 'Zero · ^_^',
     },
 };
