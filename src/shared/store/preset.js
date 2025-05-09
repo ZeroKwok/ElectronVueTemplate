@@ -2,6 +2,7 @@ export default {
     settings: {
         theme: 'light',
         language: 'en',
+        roundedWindow: false,
     },
     shared: {
         app: {

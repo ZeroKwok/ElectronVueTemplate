@@ -7,23 +7,10 @@
         </a>
 
         <nav>
-          <RouterLink to="/home">{{ $t('home.label') }}</RouterLink>
-          <RouterLink to="/about">{{ $t('about.label') }}</RouterLink>
+          <RouterLink to="/home">{{ $t('app.nav.home') }}</RouterLink>
+          <RouterLink to="/settings">{{ $t('app.nav.settings') }}</RouterLink>
+          <RouterLink to="/about">{{ $t('app.nav.about') }}</RouterLink>
         </nav>
-
-        <label>
-          {{ $t('app.language') }}
-          <select :value="$store.state.settings.language"
-            @change="$store.dispatch('update', { key: 'settings.language', value: $event.target.value })">
-            <option v-for="(locale, code) in i18n.global.index.locales" :key="code" :value="code">
-              {{ locale.name }}({{ code }})
-            </option>
-          </select>
-        </label>
-
-        <label>
-          <input type="checkbox" v-model="useRoundedFrame" /> {{ $t('app.use_rounded_frame') }}
-        </label>
       </header>
 
       <div class="container">
@@ -38,16 +25,13 @@ import { ref, computed, defineAsyncComponent, watch } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router';
 import i18n from './i18n';
-
-// icons by https://github.com/microsoft/vscode-codicons
-import '@vscode/codicons/dist/codicon.css';
+import store from './common/state';
 
 const route = useRoute();
 const router = useRouter();
 
-const useRoundedFrame = ref(false);
 const windowFrameComponent = computed(() => {
-  return useRoundedFrame.value
+  return (store.state.settings?.roundedWindow || false)
     ? defineAsyncComponent(() => import('./components/RoundedWindowFrame.vue'))
     : defineAsyncComponent(() => import('./components/WindowFrame.vue'))
 });
@@ -84,8 +68,12 @@ watch(
       margin-right: auto;
       text-decoration: none;
       font-weight: bold;
+      color: var(--color-text-secondary);
+
       &.router-link-exact-active {
-        color: var(--color-text);
+        color: green;
+        text-decoration: underline;
+
         &:hover {
           background-color: transparent;
         }
@@ -100,23 +88,10 @@ watch(
     nav {
       a {
         border-left: 1px solid var(--color-border);
+
         &:first-of-type {
           border: 0;
         }
-      }
-    }
-
-    label {
-      display: flex;
-      white-space: nowrap;
-      padding: 0 10px;
-
-      input {
-        margin-right: 5px;
-      }
-
-      select {
-        margin-left: 5px;
       }
     }
   }
