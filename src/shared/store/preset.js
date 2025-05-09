@@ -1,3 +1,11 @@
+let appName = 'Unknown';
+let appVersion = 'Unknown';
+try {
+    appName = __APP_NAME__ ?? appName;
+    appVersion = __APP_VERSION__ ?? appVersion;
+}
+catch (e) { }
+
 export default {
     settings: {
         theme: 'light',
@@ -6,8 +14,8 @@ export default {
     },
     shared: {
         app: {
-            name: __APP_NAME__ ?? 'Unknown',
-            version: __APP_VERSION__ ?? 'Unknown',
+            name: appName,
+            version: appVersion,
         }
     },
 }
