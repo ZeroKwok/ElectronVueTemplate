@@ -5,31 +5,27 @@
     <div class="settings-list">
       <label class="settings-item">
         <span class="item-label">{{ $t('settings.language') }}</span>
-        <select class="item-value" :value="$store.state.settings.language"
-          @change="$store.dispatch('update', { key: 'settings.language', value: $event.target.value })">
-          <option v-for="(locale, code) in i18n.global.index.locales" :key="code" :value="code">
-            {{ locale.name }}({{ code }})
-          </option>
-        </select>
+        <el-select class="item-value" size="small" :model-value="$store.state.settings.language"
+          @update:model-value="val => $store.dispatch('update', { key: 'settings.language', value: val })">
+          <el-option v-for="(locale, code) in i18n.global.index.locales" :key="code" :value="code" :label="`${locale.name}(${code})`"/>
+        </el-select>
       </label>
 
       <label class="settings-item">
         <span class="item-label">{{ $t('settings.theme') }}</span>
-        <select class="item-value" :value="$store.state.settings.theme"
-          @change="$store.dispatch('update', { key: 'settings.theme', value: $event.target.value })">
-          <option v-for="(name, code) in themeOptions" :key="name" :value="code">
-            {{ name }}
-          </option>
-        </select>
+        <el-select class="item-value" size="small" :model-value="$store.state.settings.theme"
+          @update:model-value="val => $store.dispatch('update', { key: 'settings.theme', value: val })">
+          <el-option v-for="(name, code) in themeOptions" :key="name" :value="code" :label="name"/>
+        </el-select>
       </label>
 
       <label class="settings-item">
         <span class="item-label">{{ $t('settings.roundedWindow') }}</span>
-        <input class="item-value" type="checkbox" :checked="$store.state.settings.roundedWindow"
-          @change="$store.dispatch('update', { key: 'settings.roundedWindow', value: $event.target.checked })" />
+        <el-switch class="item-value" size="small"
+          :model-value="$store.state.settings.roundedWindow"
+          @update:model-value="val => $store.dispatch('update', { key: 'settings.roundedWindow', value: val })" />
       </label>
     </div>
-
   </div>
 </template>
 
@@ -64,7 +60,8 @@ const themeOptions = computed(() => ({
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
-    align-items: baseline;
+    align-items: center;
+    justify-content: center;
 
     .settings-item {
       display: contents;
@@ -77,10 +74,6 @@ const themeOptions = computed(() => ({
 
       .item-value {
         text-align: left;
-      }
-
-      input {
-        margin-right: auto;
       }
     }
   }

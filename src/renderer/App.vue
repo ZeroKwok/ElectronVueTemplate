@@ -71,7 +71,7 @@ watch(
       color: var(--color-text-secondary);
 
       &.router-link-exact-active {
-        color: green;
+        color: #409EFF;
         text-decoration: underline;
 
         &:hover {
