@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'node:url'
+import { resolve } from "node:path"
 import vue from '@vitejs/plugin-vue'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -28,7 +29,11 @@ const config = {
         sourcemap: true,
         target: 'es2022', // 设置为支持 top-level await 的环境
         rollupOptions: {
-        }
+            input: {
+                index: resolve(__dirname, 'index.html'),
+                messageBox: resolve('src/renderer/electron/NativeMessageBox.html'),
+            },
+        },
     },
     css: {
         preprocessorOptions: {

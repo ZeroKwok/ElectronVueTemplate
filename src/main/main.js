@@ -10,6 +10,7 @@ import windowStateKeeper from '../shared/utils/window-state.js';
 import updater from './updater.js';
 import { getPackage } from '../shared/utils/package.js';
 import { logger } from './logger.js';
+import NativeDialog from './ndialog.js';
 
 const gotTheLock = app.requestSingleInstanceLock();
 
@@ -84,6 +85,33 @@ const createWindow = () => {
     cache.set("shared.window.maximized", false);
   });
   cache.set("shared.window.maximized", mainWindow.isMaximized());
+
+  // Listen to the window close event
+  mainWindow.on('close', async (event) => {
+    event.preventDefault();
+    try {
+      const file = {
+        file: path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/src/electron/NativeMessageBox.html`),
+      };
+      if (MAIN_WINDOW_VITE_DEV_SERVER_URL)
+        file['url'] = `${MAIN_WINDOW_VITE_DEV_SERVER_URL}/src/renderer/electron/NativeMessageBox.html`;
+
+      const result = await new NativeDialog().show(mainWindow, {
+        ...file,
+        title: pkg.productName,
+        message: 'Are you sure you want to exit?',
+        buttons: { no: 'No', yes: 'Yes' }
+      });
+
+      if (result.value === 'yes') {
+        mainWindow.destroy();
+      }
+    }
+    catch (e) {
+      logger.error('NativeDialog error:', e);
+      mainWindow.destroy();
+    }
+  });
 
   if (process.env.NODE_ENV === 'development') {
     // Open the DevTools.
