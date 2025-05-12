@@ -178,7 +178,7 @@ if (process.env.NODE_ENV !== 'development') {
       title: 'Application Update',
       message: process.platform === 'win32' ? releaseNotes : releaseName,
       detail:
-        'A new version has been downloaded. Starta om applikationen för att verkställa uppdateringarna.'
+        'A new version has been downloaded. Restart the application to apply the updates.'
     }
 
     dialog.showMessageBox(dialogOpts).then((returnValue) => {
