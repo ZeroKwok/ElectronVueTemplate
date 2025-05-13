@@ -3,11 +3,11 @@
     <div class="window-titlebar">
        <div class="title">{{ title }}</div>
        <div class="controls">
-         <div
+         <div v-if="resizable"
              class="button minimize codicon codicon-chrome-minimize"
              @click="windowMinimize"
          ></div>
-         <div
+         <div v-if="resizable"
              class="button max-restore codicon"
              :class="{
              'codicon-chrome-restore': isMaximized,
@@ -40,6 +40,10 @@ defineProps({
   title: {
     type: String,
     default: 'Win32Titlebar',
+  },
+  resizable: {
+    type: Boolean,
+    default: true,
   },
 });
 

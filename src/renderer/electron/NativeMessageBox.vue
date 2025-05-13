@@ -1,5 +1,5 @@
 <template>
-    <component :is="windowFrameComponent" :title="title">
+    <component :is="windowFrameComponent" :title="title" :resizable="false">
         <div class="container">
             <div class="content">
                 <div class="icon" v-if="iconComponent">
