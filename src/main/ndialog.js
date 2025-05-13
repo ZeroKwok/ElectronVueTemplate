@@ -40,16 +40,16 @@ class NativeDialog {
             else
                 this._win.loadFile(options.file);
 
-            this._win.once('ready-to-show', () => { // 这个事件, 可能在脚本没有执行完成时被触发
+            this._win.once('ready-to-show', () => {
                 this._win.show();
-            });
 
-            ipcMain.handle(`dialog-inited`, (event) => {
-                return { ...options, winId: this._win.id };
+                 // 这个事件, 可能在脚本没有执行完成时被触发, 因此这里延迟下执行
+                setTimeout(() => {
+                    this._win.webContents.send('dialog-init', { ...options, winId: this._win.id });
+                }, 30);
             });
 
             this._win.on('closed', () => {
-                ipcMain.removeAllListeners(`dialog-inited`);
                 ipcMain.removeAllListeners(`dialog-close-${this._win.id}`);
 
                 this._win = null;

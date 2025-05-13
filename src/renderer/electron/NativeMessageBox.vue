@@ -127,10 +127,8 @@ const initDialog = (options) => {
     buttons.value = buttons;
 };
 
-ipcRenderer.invoke('dialog-inited', {}).then((result) => {
-    if (result) {
-        initDialog(result);
-    }
+ipcRenderer.on('dialog-init', (event, options) => {
+    initDialog(options);
 });
 </script>
 
