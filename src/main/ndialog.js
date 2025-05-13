@@ -1,5 +1,6 @@
-const path = require('path');
-const { BrowserWindow, ipcMain } = require('electron')
+import { BrowserWindow, ipcMain } from 'electron'
+import path from 'node:path';
+import settings from '../shared/store/settings'
 
 class NativeDialog {
     constructor() {
@@ -14,31 +15,32 @@ class NativeDialog {
                 reject();
                 return;
             }
-
             options.window = options?.window || {};
-            options.window.title = options?.window?.title || options?.title;
 
             this._win = new BrowserWindow({
                 width: 450,
                 height: 200,
                 parent: parent,
-                modal: false,
                 show: false,
                 frame: false,
                 resizable: false,
+                transparent: settings.get('settings.roundedWindow', false),
                 webPreferences: {
                     nodeIntegration: false,
                     contextIsolation: true,
                     webSecurity: true,
                     preload: path.join(__dirname, 'preload.js')
                 },
-                ...options?.window
+                title: options?.title || '',
+                modal: options?.modal || false,
+                ...options.window,
             });
 
-            if (options.url)
-                this._win.loadURL(options.url);
+            options.file = options.file.replaceAll('\\', '/');
+            if (MAIN_WINDOW_VITE_DEV_SERVER_URL)
+                this._win.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/${options.file}`);
             else
-                this._win.loadFile(options.file);
+                this._win.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/${options.file}`));
 
             this._win.once('ready-to-show', () => {
                 this._win.show();

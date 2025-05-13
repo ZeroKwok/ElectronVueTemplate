@@ -90,17 +90,12 @@ const createWindow = () => {
   mainWindow.on('close', async (event) => {
     event.preventDefault();
     try {
-      const file = {
-        file: path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/src/electron/NativeMessageBox.html`),
-      };
-      if (MAIN_WINDOW_VITE_DEV_SERVER_URL)
-        file['url'] = `${MAIN_WINDOW_VITE_DEV_SERVER_URL}/src/renderer/electron/NativeMessageBox.html`;
-
       const result = await new NativeDialog().show(mainWindow, {
-        ...file,
+        file: 'src/renderer/electron/NativeMessageBox.html',
         title: pkg.productName,
         message: 'Are you sure you want to exit?',
-        buttons: { no: 'No', yes: 'Yes' }
+        buttons: { no: 'No', yes: 'Yes' },
+        modal: true,
       });
 
       if (result.value === 'yes') {
