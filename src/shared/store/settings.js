@@ -7,7 +7,7 @@ class Settings extends Store {
     constructor(options) {
         options = {
             name: 'settings',
-            defaults: preset,
+            defaults: preset.settings,
             ...options,
         };
 
