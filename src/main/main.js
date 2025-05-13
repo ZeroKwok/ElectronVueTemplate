@@ -103,6 +103,7 @@ const createWindow = () => {
       }
     }
     catch (e) {
+      logger.error('Error:', e);
       mainWindow.destroy();
     }
   });
@@ -195,19 +196,26 @@ if (process.env.NODE_ENV !== 'development') {
   updater.on('update-downloaded', async (event, releaseNotes, releaseName) => {
     logger.info('Update downloaded:', releaseName, releaseNotes);
 
-    const detail = process.platform === 'win32' ? releaseName : releaseNotes;
-    const result = await new NativeDialog().show(mainWindow, {
-      type: 'info',
-      file: 'src/renderer/electron/NativeMessageBox.html',
-      title: 'Application Update',
-      message: `A new version has been downloaded. Restart the application to apply the updates.\n${detail}`,
-      buttons: { no: 'Later', yes: 'Restart' },
-      modal: true,
-    });
+    try {
+      const detail = process.platform === 'win32' ? releaseName : releaseNotes;
+      const result = await new NativeDialog().show(
+        cache.get("mainWindow", null),
+        {
+          type: 'info',
+          file: 'src/renderer/electron/NativeMessageBox.html',
+          title: 'Application Update',
+          message: `A new version has been downloaded. Restart the application to apply the updates.\n${detail}`,
+          buttons: { no: 'Later', yes: 'Restart' },
+          modal: true,
+        });
 
-    if (result.value === 'yes') {
-      logger.info('Restarting application.');
-      updater.quitAndInstall();
+      if (result.value === 'yes') {
+        logger.info('Restarting application.');
+        updater.quitAndInstall();
+      }
+    }
+    catch (e) {
+      logger.error('Error:', e);
     }
   });
 }
