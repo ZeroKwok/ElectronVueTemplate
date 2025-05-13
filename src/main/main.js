@@ -93,7 +93,7 @@ const createWindow = () => {
       const result = await new NativeDialog().show(mainWindow, {
         file: 'src/renderer/electron/NativeMessageBox.html',
         title: pkg.productName,
-        message: 'Are you sure you want to exit?',
+        rawHtml: '<p style="font-weight: bold; color: #409EFF;">Are you sure you want to exit?</p>',
         buttons: { no: 'No', yes: 'Yes' },
         modal: true,
       });
@@ -103,7 +103,6 @@ const createWindow = () => {
       }
     }
     catch (e) {
-      logger.error('NativeDialog error:', e);
       mainWindow.destroy();
     }
   });
@@ -181,6 +180,7 @@ cache.set('shared', {
   },
   versions: {...process.versions}
 });
+
 // Initialize the auto updater in production mode, otherwise it will throw an error
 // when trying to check for updates in development mode.
 if (process.env.NODE_ENV !== 'development') {
@@ -192,23 +192,22 @@ if (process.env.NODE_ENV !== 'development') {
     logger.error('Updater error:', err);
   });
 
-  updater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+  updater.on('update-downloaded', async (event, releaseNotes, releaseName) => {
     logger.info('Update downloaded:', releaseName, releaseNotes);
 
-    const dialogOpts = {
+    const detail = process.platform === 'win32' ? releaseName : releaseNotes;
+    const result = await new NativeDialog().show(mainWindow, {
       type: 'info',
-      buttons: ['Restart', 'Later'],
+      file: 'src/renderer/electron/NativeMessageBox.html',
       title: 'Application Update',
-      message: process.platform === 'win32' ? releaseNotes : releaseName,
-      detail:
-        'A new version has been downloaded. Restart the application to apply the updates.'
-    }
+      message: `A new version has been downloaded. Restart the application to apply the updates.\n${detail}`,
+      buttons: { no: 'Later', yes: 'Restart' },
+      modal: true,
+    });
 
-    dialog.showMessageBox(dialogOpts).then((returnValue) => {
-      if (returnValue.response === 0) {
-        logger.info('Restarting application.');
-        updater.quitAndInstall()
-      }
-    })
-  })
+    if (result.value === 'yes') {
+      logger.info('Restarting application.');
+      updater.quitAndInstall();
+    }
+  });
 }

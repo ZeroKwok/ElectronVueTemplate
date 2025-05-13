@@ -7,7 +7,8 @@
                 </div>
 
                 <div class="text">
-                    <slot>{{ message }}</slot>
+                    <div v-if="rawHtml" v-html="rawHtml"></div>
+                    <template v-else>{{ message }}</template>
                 </div>
             </div>
 
@@ -63,6 +64,7 @@ const colorMap = {
 const type = ref('info');
 const title = ref('');
 const message = ref('');
+const rawHtml = ref('');
 const buttons = ref([
     {
         key: 'no',
@@ -95,6 +97,7 @@ const initDialog = (options) => {
     dialogWinId = options.winId;
     type.value = options?.type || 'info';
     title.value = options?.title;
+    rawHtml.value = options?.rawHtml || '';
     message.value = options?.message;
 
     const buttons = [];
@@ -149,6 +152,10 @@ ipcRenderer.on('dialog-init', (event, options) => {
         .icon svg {
             width: 5em;
             height: 5em;
+        }
+
+        .text {
+            white-space: pre-line;
         }
     }
 
