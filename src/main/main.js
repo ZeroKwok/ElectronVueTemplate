@@ -85,26 +85,29 @@ const createWindow = () => {
     cache.set("shared.window.maximized", false);
   });
   cache.set("shared.window.maximized", mainWindow.isMaximized());
+  cache.set("shared.window.shouldShowExitConfirmation", true);
 
   // Listen to the window close event
   mainWindow.on('close', async (event) => {
-    event.preventDefault();
-    try {
-      const result = await new NativeDialog().show(mainWindow, {
-        file: 'src/renderer/electron/NativeMessageBox.html',
-        title: pkg.productName,
-        rawHtml: '<p style="font-weight: bold; color: #409EFF;">Are you sure you want to exit?</p>',
-        buttons: { no: 'No', yes: 'Yes' },
-        modal: true,
-      });
+    if (process.platform !== 'darwin' && cache.get("shared.window.shouldShowExitConfirmation", false)) {
+      event.preventDefault();
+      try {
+        const result = await new NativeDialog().show(mainWindow, {
+          file: 'src/renderer/electron/NativeMessageBox.html',
+          title: pkg.productName,
+          rawHtml: '<p style="font-weight: bold; color: #409EFF;">Are you sure you want to exit?</p>',
+          buttons: { no: 'No', yes: 'Yes' },
+          modal: true,
+        });
 
-      if (result.value === 'yes') {
+        if (result.value === 'yes') {
+          mainWindow.destroy();
+        }
+      }
+      catch (e) {
+        logger.error('Error:', e);
         mainWindow.destroy();
       }
-    }
-    catch (e) {
-      logger.error('Error:', e);
-      mainWindow.destroy();
     }
   });
 
@@ -211,6 +214,7 @@ if (process.env.NODE_ENV !== 'development') {
 
       if (result.value === 'yes') {
         logger.info('Restarting application.');
+        cache.set("shared.window.shouldShowExitConfirmation", false);
         updater.quitAndInstall();
       }
     }
