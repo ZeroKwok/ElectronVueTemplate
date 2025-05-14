@@ -92,7 +92,7 @@ const handleButtonClick = (btn) => {
 };
 
 const initDialog = (options) => {
-    console.log('dialog-init', options);
+    console.log('dialog-init: ', options);
 
     dialogWinId = options.winId;
     type.value = options?.type || 'info';
@@ -100,34 +100,32 @@ const initDialog = (options) => {
     rawHtml.value = options?.rawHtml || '';
     message.value = options?.message;
 
-    const buttons = [];
     const defaults = {
         type: '',
         plain: false
     };
-
     const primaryBtns = ['yes', 'ok', 'confirm'];
-
+    
+    const btns = [];
     for (const [key, value] of Object.entries(options.buttons)) {
         if (typeof value === 'string') {
-            buttons.push({
+            btns.push({
                 ...defaults,
                 key: key,
                 text: value,
                 type: primaryBtns.includes(key) ? 'primary' : ''
             });
         } else if (typeof value === 'object') {
-            buttons.push({
+            btns.push({
                 ...defaults,
                 key: key,
-                text: value.text || value,
+                text: value?.text || key,
                 type: primaryBtns.includes(key) ? 'primary' : '',
                 ...value,
             });
         }
     }
-
-    buttons.value = buttons;
+    buttons.value = btns;
 };
 
 ipcRenderer.on('dialog-init', (event, options) => {
