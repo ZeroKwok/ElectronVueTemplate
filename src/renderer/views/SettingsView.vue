@@ -23,7 +23,7 @@
         <span class="item-label">{{ $t('settings.roundedWindow') }}</span>
         <el-switch class="item-value" size="small"
           :model-value="$store.state.settings.roundedWindow"
-          @update:model-value="val => $store.dispatch('update', { key: 'settings.roundedWindow', value: val })" />
+          @update:model-value="val => RequiresRestartToApply('settings.roundedWindow', val)" />
       </label>
     </div>
   </div>
@@ -32,8 +32,12 @@
 <script setup>
 import i18n from '@/i18n';
 import store from '@/common/state';
+import constant from '@/common/constant'
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// auto import, see https://github.com/element-plus/element-plus/issues/17642
+// import { ElMessageBox } from 'element-plus';
 
 const { t } = useI18n();
 
@@ -41,6 +45,29 @@ const themeOptions = computed(() => ({
   'light': t('settings.themeOptions.light'),
   'dark': t('settings.themeOptions.dark')
 }));
+
+const RequiresRestartToApply = async (key, value) => {
+  if (!constant.IS_ELECTRON) {
+    return await store.dispatch('update', { key, value });
+  }
+
+  try {
+    await ElMessageBox.confirm(
+      t('settings.restartConfirm.message'),
+      t('settings.restartConfirm.title'),
+      {
+        confirmButtonText: t('settings.restartConfirm.confirm'),
+        cancelButtonText: t('settings.restartConfirm.cancel'),
+        type: 'warning',
+      }
+    );
+
+    await store.dispatch('update', { key, value });
+    await window.electron.ipcRenderer.invoke('restartApp');
+  } catch {
+    // User canceled, Do nothing
+  }
+};
 </script>
 
 <style lang="scss">

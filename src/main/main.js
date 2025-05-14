@@ -50,7 +50,7 @@ const createWindow = () => {
     minWidth: 450,
     minHeight: 300,
     frame: false,
-    transparent: true,
+    transparent: settings.get('settings.roundedWindow', false),
     resizable: true,
     backgroundColor: '#00000000',
     icon: path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/assets/icon.png`),
