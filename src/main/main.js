@@ -50,8 +50,8 @@ const createWindow = () => {
     minWidth: 450,
     minHeight: 300,
     frame: false,
-    transparent: settings.get('settings.roundedWindow', false),
     resizable: true,
+    transparent: settings.get('settings.roundedWindow', false),
     backgroundColor: '#00000000',
     icon: path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/assets/icon.png`),
     webPreferences: {
@@ -62,6 +62,11 @@ const createWindow = () => {
     }
   });
 
+  mainWindow.createOptions = {
+    frame: false,
+    resizable: true,
+    transparent: settings.get('settings.roundedWindow', false),
+  }
   mainWindowState.manage(mainWindow);
 
   // Hide menu bar on Microsoft Windows and Linux
@@ -79,9 +84,15 @@ const createWindow = () => {
 
   // Listen to the window maximize event
   mainWindow.on('maximize', () => {
+    if (mainWindow.createOptions.transparent)
+      mainWindow.setResizable(false);
+
     cache.set("shared.window.maximized", true);
   });
   mainWindow.on('unmaximize', () => {
+    if (mainWindow.createOptions.transparent)
+      mainWindow.setResizable(true);
+
     cache.set("shared.window.maximized", false);
   });
   cache.set("shared.window.maximized", mainWindow.isMaximized());
@@ -110,6 +121,38 @@ const createWindow = () => {
       }
     }
   });
+
+  // Listen to the double click event when the window is transparent
+  if (mainWindow.createOptions.transparent) {
+    const WM_PARENTNOTIFY = 0x0210;
+    const WM_LBUTTONDOWN = 0x0201;
+
+    let lastClickTime = 0;
+    let lastClickPos = { x: 0, y: 0 };
+    mainWindow.hookWindowMessage(WM_PARENTNOTIFY, (wParam, lParam) => {
+      wParam = wParam.readInt32LE();
+      lParam = lParam.readInt32LE();
+      if (wParam === WM_LBUTTONDOWN) {
+        const x = lParam & 0xFFFF;
+        const y = lParam >> 16;
+        const currentTime = Date.now();
+
+        if (y > 30) // Let's say the taskbar is 30px tall
+          return false;
+
+        if (currentTime - lastClickTime < 300 &&
+          Math.abs(x - lastClickPos.x) < 2 &&
+          Math.abs(y - lastClickPos.y) < 2) {
+          mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
+          return true;
+        }
+
+        lastClickTime = currentTime;
+        lastClickPos = { x, y };
+      }
+      return false;
+    });
+  }
 
   if (process.env.NODE_ENV === 'development') {
     // Open the DevTools.
