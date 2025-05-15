@@ -16,11 +16,17 @@ export default {
         title: '设置页面',
         theme: '主题：',
         themeOptions: {
-            light: '明亮模式',
-            dark: '暗黑模式',
+            light: '浅色',
+            dark: '深色',
         },
         language: '语言：',
         roundedWindow: '圆角窗口样式：',
+        restartConfirm: {
+            title: '提示',
+            message: '该设置需要重新启动才能应用，是否继续？',
+            confirm: '确定',
+            cancel: '取消'
+        }
     },
     about: {
         title: '关于页面',

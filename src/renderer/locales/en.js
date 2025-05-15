@@ -21,6 +21,12 @@ export default {
         },
         language: 'Language:',
         roundedWindow: 'Rounded window style:',
+        restartConfirm: {
+            title: 'Tips',
+            message: 'This setting requires restart to take effect. Continue?',
+            confirm: 'Confirm',
+            cancel: 'Cancel'
+        }
     },
     about: {
         title: 'About Page',
