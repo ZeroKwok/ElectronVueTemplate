@@ -6,7 +6,7 @@ import started from 'electron-squirrel-startup';
 import initIPC from './ipc';
 import settings from '../shared/store/settings'
 import cache from '../shared/store/cache'
-import windowStateKeeper from '../shared/utils/window-state.js';
+import windowStateKeeper from './window-state.js';
 import updater from './updater.js';
 import { getPackage } from '../shared/utils/package.js';
 import { logger } from './logger.js';
