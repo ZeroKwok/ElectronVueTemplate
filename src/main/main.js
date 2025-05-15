@@ -99,31 +99,33 @@ const createWindow = () => {
   cache.set("shared.window.shouldShowExitConfirmation", true);
 
   // Listen to the window close event
-  mainWindow.on('close', async (event) => {
-    if (process.platform !== 'darwin' && cache.get("shared.window.shouldShowExitConfirmation", false)) {
-      event.preventDefault();
-      try {
-        const result = await new NativeDialog().show(mainWindow, {
-          file: 'src/renderer/electron/NativeMessageBox.html',
-          title: pkg.productName,
-          rawHtml: '<p style="font-weight: bold; color: #409EFF;">Are you sure you want to exit?</p>',
-          buttons: { no: 'No', yes: 'Yes' },
-          modal: true,
-        });
+  if (process.platform !== 'darwin') {
+    mainWindow.on('close', async (event) => {
+      if (cache.get("shared.window.shouldShowExitConfirmation", false)) {
+        event.preventDefault();
+        try {
+          const result = await new NativeDialog().show(mainWindow, {
+            file: 'src/renderer/electron/NativeMessageBox.html',
+            title: pkg.productName,
+            rawHtml: '<p style="font-weight: bold; color: #409EFF;">Are you sure you want to exit?</p>',
+            buttons: { no: 'No', yes: 'Yes' },
+            modal: true,
+          });
 
-        if (result.value === 'yes') {
+          if (result.value === 'yes') {
+            mainWindow.destroy();
+          }
+        }
+        catch (e) {
+          logger.error('Error:', e);
           mainWindow.destroy();
         }
       }
-      catch (e) {
-        logger.error('Error:', e);
-        mainWindow.destroy();
-      }
-    }
-  });
+    });
+  }
 
   // Listen to the double click event when the window is transparent
-  if (mainWindow.createOptions.transparent) {
+  if (process.platform === 'win32' && mainWindow.createOptions.transparent) {
     const WM_PARENTNOTIFY = 0x0210;
     const WM_LBUTTONDOWN = 0x0201;
 
@@ -143,7 +145,9 @@ const createWindow = () => {
         if (currentTime - lastClickTime < 300 &&
           Math.abs(x - lastClickPos.x) < 2 &&
           Math.abs(y - lastClickPos.y) < 2) {
-          mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
+          setTimeout(() => { // 避免窗口出现一些奇怪的问题
+            mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
+          }, 50);
           return true;
         }
 
