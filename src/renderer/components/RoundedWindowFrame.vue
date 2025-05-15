@@ -1,6 +1,6 @@
 <template>
   <div :class="['rounded-window-frame', { maximized: isMaximized }]">
-    <div class="window-titlebar">
+    <div class="window-titlebar" ref="titlebarRef">
       <div class="title">{{ title }}</div>
       <div class="controls">
         <div v-if="resizable" class="button minimize codicon codicon-chrome-minimize" @click="windowMinimize"></div>
@@ -20,6 +20,7 @@
 <script setup>
 // icons by https://github.com/microsoft/vscode-codicons
 import '@vscode/codicons/dist/codicon.css';
+import { watch, ref, onMounted } from 'vue';
 import { computed } from 'vue';
 import store from '@/common/state.js';
 
@@ -48,6 +49,23 @@ function windowMaxRestore() {
 function windowClose() {
   ipcRenderer?.send('close');
 }
+
+const titlebarRef = ref(null);
+
+onMounted(() => {
+  watch(
+    () => store.state.shared?.window?.maximized,
+    (val) => {
+      if (titlebarRef.value) {
+        if (val)
+          titlebarRef.value.classList.remove('draggable');
+        else
+          titlebarRef.value.classList.add('draggable');
+      }
+    },
+    { immediate: true }
+  );
+});
 </script>
 
 <style lang="scss" scoped>
@@ -61,12 +79,16 @@ function windowClose() {
   border-radius: var(--window-border-radius);
   background: var(--color-background);
 
+  .draggable {
+    app-region: drag;
+  }
+
   .window-titlebar {
     color: var(--color-text);
     display: flex;
     align-items: center;
     height: 32px;
-    -webkit-app-region: drag;
+    user-select: none;
     --hover: #e6e6e6;
     --active: #cccccc;
 
@@ -93,7 +115,7 @@ function windowClose() {
         display: flex;
         justify-content: center;
         align-items: center;
-        -webkit-app-region: no-drag;
+        app-region: no-drag;
 
         &:hover {
           background: var(--hover);

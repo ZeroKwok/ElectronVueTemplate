@@ -70,7 +70,8 @@ function windowClose() {
     display: flex;
     align-items: center;
     height: 32px;
-    -webkit-app-region: drag;
+    app-region: drag;
+    user-select: none;
     --hover: #e6e6e6;
     --active: #cccccc;
     .title {
@@ -94,7 +95,7 @@ function windowClose() {
         display: flex;
         justify-content: center;
         align-items: center;
-        -webkit-app-region: no-drag;
+        app-region: no-drag;
         &:hover {
           background: var(--hover);
         }
