@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow } from 'electron';
+import { app, ipcMain, BrowserWindow, dialog } from 'electron';
 import cache from '../shared/store/cache'
 import preset from '../shared/store/preset';
 import settings from '../shared/store/settings'

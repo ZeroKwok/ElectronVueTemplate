@@ -1,4 +1,4 @@
-import { app, session, BrowserWindow, dialog } from 'electron';
+import { app, session, BrowserWindow } from 'electron';
 import os from 'node:os';
 import fs from 'node:fs';
 import path from 'node:path';
