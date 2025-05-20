@@ -26,6 +26,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router';
 import i18n from './i18n';
 import store from './common/state';
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 const route = useRoute();
 const router = useRouter();
@@ -35,6 +36,22 @@ const windowFrameComponent = computed(() => {
     ? defineAsyncComponent(() => import('./components/RoundedWindowFrame.vue'))
     : defineAsyncComponent(() => import('./components/WindowFrame.vue'))
 });
+
+const applyTheme = (theme) => {
+  const html = document.documentElement
+  html.setAttribute('data-theme', theme)
+
+  // Set the theme for Element Plus
+  if (theme === 'dark')
+    html.classList.add('dark')
+  else
+    html.classList.remove('dark')
+};
+watch(
+  () => store.state.settings.theme,
+  (newTheme) => applyTheme(newTheme)
+);
+applyTheme(store.state.settings.theme);
 
 const canGoBack = ref(false);
 watch(
