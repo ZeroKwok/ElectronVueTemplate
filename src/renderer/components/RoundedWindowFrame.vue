@@ -164,7 +164,7 @@ onMounted(() => {
 }
 
 [data-theme='dark'] .window-titlebar  {
-  --hover: #191919;
-  --active: #333333;
+  --hover: #303030;
+  --active: #454545;
 }
 </style>
