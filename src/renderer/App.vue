@@ -2,15 +2,19 @@
   <component :is="windowFrameComponent" :title="$t('app.title')">
     <div class="app">
       <header>
-        <a v-if="canGoBack" href="#" class="nav-button back" @click="$router.back()">
-          <i class="codicon codicon-arrow-left"></i> {{ $t('app.back') }}
-        </a>
+        <el-link class="nav-back" v-if="canGoBack" underline="never" @click="$router.back()">
+          <el-icon>
+            <Back />
+          </el-icon>
+          {{ $t('app.back') }}
+        </el-link>
 
-        <nav>
+        <nav class="nav-tabs">
           <RouterLink to="/home">{{ $t('app.nav.home') }}</RouterLink>
           <RouterLink to="/settings">{{ $t('app.nav.settings') }}</RouterLink>
           <RouterLink to="/about">{{ $t('app.nav.about') }}</RouterLink>
         </nav>
+
       </header>
 
       <div class="container">
@@ -72,42 +76,44 @@ watch(
 
   header {
     height: 32px;
+
     display: flex;
     flex-direction: row;
     place-items: center;
     place-content: end;
-    line-height: 1.5;
-    font-size: 12px;
+    user-select: none;
+    font-size: 13px;
 
-    a {
-      display: inline-block;
-      padding: 0 1rem;
-      margin-right: auto;
-      text-decoration: none;
+
+    .nav-back {
+      margin: 0 auto 0 12px;
       font-weight: bold;
-      color: var(--color-text-secondary);
 
-      &.router-link-exact-active {
-        color: #409EFF;
-        text-decoration: underline;
-
-        &:hover {
-          background-color: transparent;
-        }
+      i {
+        margin-right: 6px;
       }
     }
 
-    .nav-button {
-      display: inline-flex;
-      gap: 4px;
-    }
-
-    nav {
+    .nav-tabs {
       a {
+        display: inline-block;
+        padding: 0 1rem;
+        text-decoration: none;
+        color: var(--el-text-color-regular);
         border-left: 1px solid var(--color-border);
 
+        &:hover {
+          color: var(--el-color-primary);
+        }
+
+        &.router-link-exact-active {
+          color: var(--el-color-primary);
+          font-weight: var(--el-font-weight-primary);
+          text-decoration: underline;
+        }
+
         &:first-of-type {
-          border: 0;
+          border-left: 0;
         }
       }
     }

@@ -2,10 +2,6 @@
 
 This project is a Vue.js and Electron application template designed to help developers quickly build cross-platform desktop applications. By providing a clear project structure and pre-configured development environment, developers can focus on implementing business logic without worrying about tedious infrastructure setup.
 
----
-
-本项目是基于 Vue.js 和 Electron 的应用程序模板，旨在帮助开发者快速构建跨平台桌面应用程序。通过提供清晰的项目结构和预配置的开发环境，开发者可以专注于业务逻辑的实现，而无需关心繁琐的基础设施。
-
 ## Features
 
 - **Modern Tech Stack**: Based on Vue 3 and Vite, providing rapid development experience.
