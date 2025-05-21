@@ -26,13 +26,12 @@
  * ```
  */
 
-import './index.css';
-
+import './styles/index.css';
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './common/state'
-import i18n from './i18n'
+import i18n from './common/i18n'
 
 const app = createApp(App)
 

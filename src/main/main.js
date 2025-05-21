@@ -213,7 +213,7 @@ app.on('window-all-closed', () => {
 // code. You can also put them in separate files and import them here.
 
 // Set the shared cache
-const locales = app.isPackaged ? `${process.resourcesPath}/locales` : './locales';
+const locales = app.isPackaged ? `${process.resourcesPath}/locales` : null;
 
 cache.set('shared', {
   os: {

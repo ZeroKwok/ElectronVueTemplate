@@ -1,8 +1,8 @@
+import '@/styles/index.css';
 import { createApp } from 'vue'
 import store from '@/common/state'
-import i18n from '@/i18n'
+import i18n from '@/common/i18n'
 import App from './NativeMessageBox.vue'
-import '@/index.css';
 
 const app = createApp(App)
 app.use(store)

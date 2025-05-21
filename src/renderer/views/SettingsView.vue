@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import i18n from '@/i18n';
+import i18n from '@/common/i18n';
 import store from '@/common/state';
 import constant from '@/common/constant'
 import { computed } from 'vue';

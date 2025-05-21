@@ -28,9 +28,9 @@
 import { ref, computed, defineAsyncComponent, watch } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router';
-import i18n from './i18n';
+import i18n from './common/i18n';
 import store from './common/state';
-import 'element-plus/theme-chalk/dark/css-vars.css'
+import { Back } from '@element-plus/icons-vue';
 
 const route = useRoute();
 const router = useRouter();

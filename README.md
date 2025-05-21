@@ -1,6 +1,8 @@
 # README
 
-This project is a Vue.js and Electron application template designed to help developers quickly build cross-platform desktop applications. By providing a clear project structure and pre-configured development environment, developers can focus on implementing business logic without worrying about tedious infrastructure setup.
+A production-ready Vue.js + Electron application template designed to help developers quickly build cross-platform desktop applications.
+
+By providing a clear project structure and pre-configured development environment, developers can focus on implementing business logic without worrying about tedious infrastructure setup.
 
 ## Features
 

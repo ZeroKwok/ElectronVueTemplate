@@ -28,7 +28,7 @@
 
 <script setup>
 import { ref, computed, defineAsyncComponent, defineComponent } from 'vue'
-import i18n from '@/i18n';
+import i18n from '@/common/i18n';
 import store from '@/common/state';
 
 const windowFrameComponent = computed(() => {
@@ -37,7 +37,6 @@ const windowFrameComponent = computed(() => {
     : defineAsyncComponent(() => import('@/components/WindowFrame.vue'))
 });
 
-import 'element-plus/theme-chalk/dark/css-vars.css'
 const applyTheme = (theme) => {
   const html = document.documentElement
   html.setAttribute('data-theme', theme)

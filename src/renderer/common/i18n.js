@@ -11,7 +11,7 @@ const i18n = createI18n({
 });
 i18n.global.index = { locales: {}, fallbackLocale: 'en', };
 
-const localesPath = store.state.shared?.app?.locales ?? './locales';
+const localesPath = store.state.shared?.app?.locales ?? '../locales';
 
 async function loadLocale(i18n, locale) {
     if (i18n.global.availableLocales.includes(locale))
