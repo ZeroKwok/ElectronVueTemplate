@@ -30,11 +30,25 @@
 import { ref, computed, defineAsyncComponent, defineComponent } from 'vue'
 import i18n from '@/i18n';
 import store from '@/common/state';
+
 const windowFrameComponent = computed(() => {
     return (store.state.settings?.roundedWindow || false)
-        ? defineAsyncComponent(() => import('@/components/RoundedWindowFrame.vue'))
-        : defineAsyncComponent(() => import('@/components/WindowFrame.vue'))
+    ? defineAsyncComponent(() => import('@/components/RoundedWindowFrame.vue'))
+    : defineAsyncComponent(() => import('@/components/WindowFrame.vue'))
 });
+
+import 'element-plus/theme-chalk/dark/css-vars.css'
+const applyTheme = (theme) => {
+  const html = document.documentElement
+  html.setAttribute('data-theme', theme)
+
+  // Set the theme for Element Plus
+  if (theme === 'dark')
+    html.classList.add('dark')
+  else
+    html.classList.remove('dark')
+};
+applyTheme(store.state.settings.theme);
 
 import {
     CircleCheckFilled,

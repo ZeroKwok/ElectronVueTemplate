@@ -47,11 +47,11 @@ const applyTheme = (theme) => {
   else
     html.classList.remove('dark')
 };
+applyTheme(store.state.settings.theme);
 watch(
   () => store.state.settings.theme,
   (newTheme) => applyTheme(newTheme)
 );
-applyTheme(store.state.settings.theme);
 
 const canGoBack = ref(false);
 watch(
