@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { version as vueVersion } from 'vue'
 export default {
   computed: {
     versionInfo() {
@@ -23,10 +24,11 @@ export default {
         'Version': app.version,
         ...(versions ?
           {
+            'Vue.js': vueVersion,
+            'Node.js': versions?.node,
             'Electron': versions?.electron,
             'Chrome': versions?.chrome,
-            'Node.js': versions?.node,
-            'V8': versions?.v8
+            'V8': versions?.v8,
           } : {}),
         ...(os ? { 'OS': `${os.type} ${os.arch} ${os.release}` } : {})
       }
@@ -56,13 +58,11 @@ export default {
 
       .info-label {
         font-weight: 500;
-        color: #7f8c8d;
         text-align: right;
         padding-right: 0.5rem 0;
       }
 
       .info-value {
-        color: #2c3e50;
         word-break: break-word;
         text-align: left;
       }
@@ -72,7 +72,6 @@ export default {
   .text {
     font-size: 1rem;
     font-weight: lighter;
-    color: #2c3e50;
     text-align: center;
   }
 
