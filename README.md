@@ -1,22 +1,39 @@
-# README
+# Vue-Electron Desktop App Template
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+[简体中文](./README.zh-CN.md)
 
 A production-ready Vue.js + Electron application template designed to help developers quickly build cross-platform desktop applications.
 
 By providing a clear project structure and pre-configured development environment, developers can focus on implementing business logic without worrying about tedious infrastructure setup.
 
-## Features
+## ✨ Features
 
-- **Modern Tech Stack**: Based on Vue 3 and Vite, providing rapid development experience.
-- **Modular Structure**: Clear project organization for easy expansion and maintenance.
-- **Internationalization**: Built-in i18n support for multi-language application development.
-- **Quick Packaging**: One-click packaging and installer building through Electron Forge.
+- **Modern Tech Stack**  
+  Powered by Vue 3 and Electron for optimal developer experience
+- **Frameless Window**  
+  Provides optional transparent background Windows with rounded corners for Windows
+- **Native-like UI**  
+  Customizable MessageBox components that match native OS dialogs
+- **Theme System**  
+  Built-in light/dark theme support with easy customization
+- **Internationalization (i18n)**  
+  Dynamic language file loading from root directory makes adding translations effortless
+- **Auto Updater**  
+  Seamless application updates with integrated version checking
+- **One-click Packaging**  
+  Streamlined build process using Electron Forge for installers
 
-## Usage
+## 🚀 Getting Started
 
 ```sh
 # Clone the project
 git clone https://github.com/ZeroKwok/ElectronVueTemplate.git
 cd ElectronVueTemplate
+
+# Optionally, set the Node or Electron mirror URL
+npm config set electron_mirror https://npmmirror.com/mirrors/electron/
 
 # Install dependencies
 npm install
@@ -31,7 +48,7 @@ npm run package
 npm run make
 ```
 
-## Project Structure
+## 🔨 Project Structure
 
 ```sh
 /
@@ -39,7 +56,10 @@ npm run make
 │   ├── main/                # Electron main process code
 │   │   ├── ipc.js           # Main/renderer process communication
 │   │   ├── main.js          # Main process entry file
+│   │   ├── logger.js        # Main process logger
 │   │   ├── preload.js       # Preload script
+│   │   ├── ndialog.js       # Native dialog
+│   │   ├── updater.js       # Auto update manager
 │   │   └── ...
 │   │
 │   ├── renderer/            # Vue renderer process code
@@ -49,15 +69,25 @@ npm run make
 │   │   ├── views/           # Vue page views
 │   │   ├── locales/         # i18n translation file (usually also a git subrepository)
 │   │   ├── public           # Public assets
+│   │   ├── common           # Common code
+│   │   │   ├── i18n.js      # i18n management
+│   │   │   ├── state.js     # Global state management
+│   │   │   ├── logger.js    # Renderer process logger
+│   │   │   ├── constants.js # Runtime environment constants
+│   │   │   └── ...
+│   │   │
 │   │   ├── App.vue          # Root component
-│   │   └── main.js          # Renderer process entry file
+│   │   └── renderer.js      # Renderer process entry file
 │   │
 │   ├── server/              # Server mode code
 │   │   ├── index.js         # Server mode entry file
 │   │   └── routes/          # Server mode routes
 │   │
 │   └── shared/              # Shared code
-│       ├── store/           # Settings/cache/state management
+│       ├── store/           # 
+│       │   ├── cache.js     # Runtime cache management(in-memory), shared between the main and renderer process
+│       │   └── settings.js  # App settings management(in-disk)
+│       │   └── preset.js    # shared and settings default preset
 │       └── utils/           # Shared utility functions
 │           ├── env.js       # Runtime environment constants
 │           └── example.js   # Example utility functions
@@ -72,10 +102,10 @@ npm run make
 └── README.md                # Project documentation
 ```
 
-## Contributing
+## 🤝 Contributing
 
 Suggestions and code contributions are welcome! Please make sure to read the [Contributing Guidelines](CONTRIBUTING.md) before submitting a PR.
 
-## License
+## 📄 License
 
 This project is open-sourced under the [MIT License](LICENSE).
