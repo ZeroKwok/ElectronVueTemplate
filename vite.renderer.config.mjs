@@ -38,7 +38,8 @@ const config = {
     css: {
         preprocessorOptions: {
             scss: {
-                api: "modern"
+                api: "modern",
+                additionalData: `@use "@/styles/element.scss" as *;`,
             }
         }
     },
