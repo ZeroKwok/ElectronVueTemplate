@@ -7,7 +7,9 @@ try {
     appVersion = __APP_VERSION__ ?? appVersion;
 
     if (document?.documentElement) {
-        theme = getComputedStyle(document.documentElement)?.getPropertyValue('--color-scheme') ?? theme;
+        const value = getComputedStyle(document.documentElement)?.getPropertyValue('--color-scheme');
+        if (value == 'dark') // avoid --color-scheme is empty or unexpected value
+            theme = value;
     }
 }
 catch (e) { }
