@@ -68,14 +68,14 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .rounded-window-frame {
   position: fixed;
-  left: 8px;
-  top: 8px;
-  height: calc(100% - 18px);
-  width: calc(100% - 18px);
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.6);
+  left: var(--window-margin);
+  top: var(--window-margin);
+  height: calc(100% - var(--window-margin) * 2);
+  width: calc(100% - var(--window-margin) * 2);
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.6);
   border-radius: var(--window-border-radius);
   background: var(--color-background);
 

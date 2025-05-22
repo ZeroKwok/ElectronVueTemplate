@@ -41,6 +41,7 @@ const windowFrameComponent = computed(() => {
     : defineAsyncComponent(() => import('./components/WindowFrame.vue'))
 });
 
+// App Theme
 const applyTheme = (theme) => {
   const html = document.documentElement
   html.setAttribute('data-theme', theme)
@@ -55,6 +56,17 @@ applyTheme(store.state.settings.theme);
 watch(
   () => store.state.settings.theme,
   (newTheme) => applyTheme(newTheme)
+);
+
+// Rounded Window
+const applyRounded = (rounded) => {
+  const html = document.documentElement
+  rounded ? html.setAttribute('rounded', '') : html.removeAttribute('rounded');
+};
+applyRounded(store.state.settings.roundedWindow);
+watch(
+  () => store.state.settings.roundedWindow,
+  (rounded) => applyRounded(rounded)
 );
 
 const canGoBack = ref(false);

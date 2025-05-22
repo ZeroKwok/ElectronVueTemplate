@@ -37,10 +37,10 @@
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
-  
-  --widget-border-radius: 6px;
-  --window-border-radius: 6px;
 
+  --widget-border-radius: 6px;
+  --window-border-radius: 0px;
+  --window-margin: 0px;
 }
 
 [data-theme="dark"]:root {
@@ -62,6 +62,11 @@
   :root {
     --color-scheme: dark;
   }
+}
+
+[rounded]:root {
+  --window-border-radius: 6px;
+  --window-margin: 9px;
 }
 
 *,

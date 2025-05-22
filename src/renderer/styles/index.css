@@ -6,3 +6,11 @@
   height: 100%;
   margin: 0 auto;
 }
+
+.el-overlay {
+  left: var(--window-margin) !important;
+  top: var(--window-margin) !important;
+  height: calc(100% - var(--window-margin) * 2) !important;
+  width: calc(100% - var(--window-margin) * 2) !important;
+  border-radius: var(--window-border-radius);
+}

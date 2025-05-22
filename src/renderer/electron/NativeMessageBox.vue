@@ -37,6 +37,7 @@ const windowFrameComponent = computed(() => {
     : defineAsyncComponent(() => import('@/components/WindowFrame.vue'))
 });
 
+// App Theme
 const applyTheme = (theme) => {
   const html = document.documentElement
   html.setAttribute('data-theme', theme)
@@ -47,7 +48,15 @@ const applyTheme = (theme) => {
   else
     html.classList.remove('dark')
 };
+
+// Rounded Window
+const applyRounded = (rounded) => {
+    const html = document.documentElement
+    rounded ? html.setAttribute('rounded', '') : html.removeAttribute('rounded');
+};
+
 applyTheme(store.state.settings.theme);
+applyRounded(store.state.settings.roundedWindow);
 
 import {
     CircleCheckFilled,
@@ -153,6 +162,7 @@ ipcRenderer.on('dialog-init', (event, options) => {
     padding: 1rem;
     display: grid;
     grid-template-rows: auto minmax(10px, 40px) auto;
+    user-select: none;
 
     .content {
         display: flex;
@@ -167,6 +177,7 @@ ipcRenderer.on('dialog-init', (event, options) => {
 
         .text {
             white-space: pre-line;
+            user-select: text;
         }
     }
 
