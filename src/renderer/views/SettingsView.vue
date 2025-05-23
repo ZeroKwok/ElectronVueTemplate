@@ -101,6 +101,7 @@ const RequiresRestartToApply = async (key, value) => {
 
       .item-value {
         text-align: left;
+        margin-right: auto;
       }
     }
   }
