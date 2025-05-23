@@ -24,6 +24,8 @@ class NativeDialog {
                 show: false,
                 frame: false,
                 resizable: false,
+                maximizable: false,
+                minimizable: false,
                 transparent: settings.get('settings.roundedWindow', false),
                 webPreferences: {
                     nodeIntegration: false,
