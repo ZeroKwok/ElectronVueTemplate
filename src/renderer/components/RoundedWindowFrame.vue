@@ -68,7 +68,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .rounded-window-frame {
   position: fixed;
   left: var(--window-margin);

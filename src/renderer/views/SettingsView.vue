@@ -70,7 +70,7 @@ const RequiresRestartToApply = async (key, value) => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .settings {
   height: 100%;
   display: flex;
