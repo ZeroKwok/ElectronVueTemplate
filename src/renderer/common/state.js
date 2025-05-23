@@ -1,11 +1,12 @@
 
 import vuex from 'vuex';
+import lodash from 'lodash-es';
 import preset from '#/store/preset.js';
 import { setProperty } from 'dot-prop';
 
-const state = window.electron
-  ? await window.electron.ipcRenderer.invoke('get', 'state', preset)
-  : preset;
+const state = lodash.cloneDeep(preset);
+if (window.electron)
+  lodash.merge(state, await window.electron.ipcRenderer.invoke('get', 'state', {}))
 
 const store = vuex.createStore({
   state: {
