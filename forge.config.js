@@ -16,6 +16,7 @@ const writeCopyright = async (config, packageResult) => {
 
 module.exports = {
   packagerConfig: {
+    executableName: pkg.name,
     asar: true,
     icon: "src/main.ico",
     extraResource: [
@@ -24,7 +25,8 @@ module.exports = {
   },
   hooks: {
     postPackage: async (config, packageResult) => {
-      await writeCopyright(config, packageResult);
+      if (process.platform === "win32")
+        await writeCopyright(config, packageResult);
     },
   },
   rebuildConfig: {},
@@ -40,16 +42,31 @@ module.exports = {
       },
     },
     {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
+      name: '@pengx17/electron-forge-maker-appimage',
+      config: {
+        icons: [
+          {
+            file: "src/renderer/assets/icon.png",
+            size: 128,
+          },
+        ],
+      },
+      platforms: ['linux'],
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {},
+      config: {
+      },
+      platforms: ['linux'],
     },
     {
       name: '@electron-forge/maker-rpm',
       config: {},
+      platforms: ['linux'],
+    },
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin'],
     },
   ],
   plugins: [
