@@ -33,19 +33,28 @@ git clone https://github.com/ZeroKwok/ElectronVueTemplate.git
 cd ElectronVueTemplate
 
 # Optionally, set the Node or Electron mirror URL
-npm config set electron_mirror https://npmmirror.com/mirrors/electron/
+npm config set registry https://registry.npmmirror.com
+yarn config set electron_mirror https://npmmirror.com/mirrors/electron/
 
 # Install dependencies
-npm install
+yarn
 
 # Run
-npm run start
+yarn start
 
 # Package
-npm run package
+yarn package
 
 # Build installer
-npm run make
+yarn make
+```
+
+### Ubuntu 24.04 and Later
+
+In Ubuntu 24.04, there may be a sandbox restriction error at `yarn start`. Use the following command to remove the sandbox restriction.
+
+```sh
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 ```
 
 ## 🔨 Project Structure

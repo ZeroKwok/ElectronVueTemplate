@@ -33,20 +33,28 @@ git clone https://github.com/ZeroKwok/ElectronVueTemplate.git
 cd ElectronVueTemplate
 
 # 可选设置Node或Electron镜像
-npm config set registry https://registry.npm.taobao.org
-npm config set electron_mirror https://npmmirror.com/mirrors/electron/
+npm config set registry https://registry.npmmirror.com
+yarn config set electron_mirror https://npmmirror.com/mirrors/electron/
 
 # 安装依赖
-npm install
+yarn
 
 # 运行
-npm run start
+yarn start
 
 # 打包
-npm run package
+yarn package
 
 # 构建安装程序
-npm run make
+yarn make
+```
+
+### Ubuntu 24.04 及以后
+
+在 Ubuntu 24.04 中 `yarn start` 时可能会出现沙盒限制错误，使用如下命令解除沙盒限制。
+
+```sh
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 ```
 
 ## 🔨 项目结构
