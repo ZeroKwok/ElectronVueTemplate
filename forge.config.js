@@ -61,11 +61,6 @@ module.exports = {
       platforms: ['linux'],
     },
     {
-      name: '@electron-forge/maker-rpm',
-      config: {},
-      platforms: ['linux'],
-    },
-    {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],
     },
