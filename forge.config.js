@@ -6,7 +6,7 @@ const rcedit = require('rcedit');
 const pkg = require('./package.json');
 
 const writeCopyright = async (config, packageResult) => {
-  const exePath = path.join(packageResult.outputPaths[0], `${pkg.productName}.exe`)
+  const exePath = path.join(packageResult.outputPaths[0], `${pkg.name}.exe`)
   await rcedit(exePath, {
     'version-string': {
       LegalCopyright: pkg.copyright || 'Copyright (c) 2025 default'
@@ -22,6 +22,7 @@ module.exports = {
     extraResource: [
       "src/renderer/locales"
     ],
+    executableName: pkg.name,
   },
   hooks: {
     postPackage: async (config, packageResult) => {
