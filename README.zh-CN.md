@@ -49,6 +49,8 @@ yarn package
 yarn make
 ```
 
+Node.js 需要 20 及以上的版本，建议使用 `nvm` 来管理多个不同版本的 Node.js。
+
 ### Ubuntu 24.04 及以后
 
 在 Ubuntu 24.04 中 `yarn start` 时可能会出现沙盒限制错误，使用如下命令解除沙盒限制。

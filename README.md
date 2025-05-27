@@ -49,6 +49,8 @@ yarn package
 yarn make
 ```
 
+Node.js requires version 20 or above. It is recommended to use `nvm` to manage multiple different versions of Node.js.
+
 ### Ubuntu 24.04 and Later
 
 In Ubuntu 24.04, there may be a sandbox restriction error at `yarn start`. Use the following command to remove the sandbox restriction.
