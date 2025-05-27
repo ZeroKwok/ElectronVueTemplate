@@ -9,7 +9,7 @@
   "description": "your application description",
   "main": ".vite/build/main.js",
   "urls": {
-    "update": "http://localhost:5001/api/v1/update/YourProductName"
+    "update": "http://localhost:5001/api/v1/updates/YourProductName"
   },
   "scripts": {
     "dev": "vite dev --config vite.renderer.config.mjs",
