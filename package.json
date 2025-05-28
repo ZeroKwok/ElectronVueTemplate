@@ -4,7 +4,7 @@
   "engines": {
     "node": "20"
   },
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.3",
   "copyright": "Copyright (c) 2025 your-name",
   "description": "your application description",
   "main": ".vite/build/main.js",
@@ -17,6 +17,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
+    "push-win": "upboard_publish http://localhost:5001/api/v1/releases/YourProductName/win32/x64 out/make/squirrel.windows/x64",
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
