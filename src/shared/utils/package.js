@@ -8,6 +8,7 @@ export function getPackage() {
 
     const files = [
         path.join(process.resourcesPath, 'app.asar', 'package.json'),
+        path.join(process.resourcesPath, 'app', 'package.json'),
         file,
     ];
 
