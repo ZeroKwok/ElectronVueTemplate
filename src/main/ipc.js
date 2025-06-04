@@ -2,6 +2,7 @@ import { app, ipcMain, BrowserWindow, dialog } from 'electron';
 import cache from '../shared/store/cache'
 import preset from '../shared/store/preset';
 import settings from '../shared/store/settings'
+import { logger } from './logger';
 
 // 窗口操作相关的 IPC 处理
 function handleWindowOperations() {
@@ -68,7 +69,7 @@ function handleSettingsOperations() {
             };
         }
         else
-            console.log('Unknown key: ' + key);
+            logger.info('Unknown key: ' + key);
 
         return defaultValue;
     });
@@ -76,24 +77,28 @@ function handleSettingsOperations() {
     ipcMain.handle('set', async (event, key, value) => {
         try {
             if (key == 'settings')
-                settings.set(key, value);
+                settings.set(key, value, { from: 'renderer' });
             else if (key == 'shared')
-                cache.set(key, value);
+                cache.set(key, value, { from: 'renderer' });
             else
-                console.log('Unknown key: ' + key);
+                logger.info('Unknown key: ' + key);
         } catch (e) {
-            console.error(e);
+            logger.error(e);
         }
     });
 
     // 监听变化
-    settings.onDidChange('settings', (newValue, oldValue) => {
+    settings.onDidChange('settings', (newValue, oldValue, userData) => {
+        if (userData?.from === 'renderer')
+            return;
         BrowserWindow.getAllWindows().forEach(win => {
             win.webContents.send('changeed', 'settings', newValue);
         });
     });
 
-    cache.onChange('shared', (newValue, oldValue) => {
+    cache.onChange('shared', (newValue, oldValue, userData) => {
+        if (userData?.from === 'renderer')
+            return;
         BrowserWindow.getAllWindows().forEach(win => {
             win.webContents.send('changeed', 'shared', newValue);
         });

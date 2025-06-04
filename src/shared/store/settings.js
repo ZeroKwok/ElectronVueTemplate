@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from 'node:util';
 import process from 'node:process';
 import Store from 'electron-store';
 import preset from './preset.js';
@@ -17,6 +18,43 @@ class Settings extends Store {
             options.projectVersion ||= env.version;
         }
         super(options);
+        this.userData = undefined;
+    }
+
+    // Override Conf's set method
+    set(key, value, userData={}) {
+        this.userData = userData;
+        return super.set(key, value);
+    }
+
+    // Override Conf's setter/getter method
+    set store(value) {
+        this._ensureDirectory();
+        this._validate(value);
+        this._write(value);
+        this.events.dispatchEvent(new CustomEvent('change', { detail: this.userData || {} }));
+        this.userData = undefined;
+    }
+    get store() {
+        return super.store;
+    }
+
+    // Override Conf's _handleChange method
+    _handleChange(getter, callback) {
+        let currentValue = getter();
+        const onChange = (event) => {
+            const oldValue = currentValue;
+            const newValue = getter();
+            if (isDeepStrictEqual(newValue, oldValue)) {
+                return;
+            }
+            currentValue = newValue;
+            callback.call(this, newValue, oldValue, event?.detail);
+        };
+        this.events.addEventListener('change', onChange);
+        return () => {
+            this.events.removeEventListener('change', onChange);
+        };
     }
 };
 

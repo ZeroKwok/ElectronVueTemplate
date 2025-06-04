@@ -3,30 +3,30 @@ import { getProperty, hasProperty, setProperty, deleteProperty, } from 'dot-prop
 
 class Cache {
   constructor() {
-    this._store = {};
-    this._events = new EventTarget();
+    this.store = {};
+    this.events = new EventTarget();
   }
 
   has(key) {
-    return hasProperty(this._store, key);
+    return hasProperty(this.store, key);
   }
 
-  set(key, value) {
+  set(key, value, userData=undefined) {
     const oldValue = this.get(key, undefined);
     if (oldValue === value)
       return this;
-    setProperty(this._store, key, value);
-    this._change();
+    setProperty(this.store, key, value);
+    this._change(userData);
     return this;
   }
 
   get(key, defaultValue=undefined) {
-    return getProperty(this._store, key, defaultValue);
+    return getProperty(this.store, key, defaultValue);
   }
 
   delete(key) {
     if (this.has(key)) {
-      deleteProperty(this._store, key);
+      deleteProperty(this.store, key);
       this._change();
       return true;
     }
@@ -34,7 +34,7 @@ class Cache {
   }
 
   clear() {
-    this._store = {};
+    this.store = {};
     this._change();
     return this;
   }
@@ -45,23 +45,23 @@ class Cache {
 
   _handleChange(getter, callback) {
     let currentValue = getter();
-    const onChange = () => {
+    const onChange = (event) => {
       const oldValue = currentValue;
       const newValue = getter();
       if (isDeepStrictEqual(newValue, oldValue)) {
         return;
       }
       currentValue = newValue;
-      callback.call(this, newValue, oldValue);
+      callback.call(this, newValue, oldValue, event.detail);
     };
-    this._events.addEventListener('change', onChange);
+    this.events.addEventListener('change', onChange);
     return () => {
-      this._events.removeEventListener('change', onChange);
+      this.events.removeEventListener('change', onChange);
     };
   }
 
-  _change() {
-    this._events.dispatchEvent(new Event('change'));
+  _change(userData=undefined) {
+    this.events.dispatchEvent(new CustomEvent('change', { detail: userData }));
   }
 };
 
