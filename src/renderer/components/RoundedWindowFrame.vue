@@ -3,6 +3,9 @@
     <div class="window-titlebar" ref="titlebarRef">
       <div class="title">{{ title }}</div>
       <div class="controls">
+        <div v-if="$slots.buttons">
+          <slot name="buttons"></slot>
+        </div>
         <div v-if="resizable" class="button minimize codicon codicon-chrome-minimize" @click="windowMinimize"></div>
         <div v-if="resizable" class="button max-restore codicon" :class="{
           'codicon-chrome-restore': isMaximized,
@@ -163,7 +166,7 @@ onMounted(() => {
   }
 }
 
-[data-theme='dark'] .window-titlebar  {
+[data-theme='dark'] .window-titlebar {
   --hover: #303030;
   --active: #454545;
 }

@@ -1,25 +1,18 @@
 <template>
   <div class="window-frame">
     <div class="window-titlebar">
-       <div class="title">{{ title }}</div>
-       <div class="controls">
-         <div v-if="resizable"
-             class="button minimize codicon codicon-chrome-minimize"
-             @click="windowMinimize"
-         ></div>
-         <div v-if="resizable"
-             class="button max-restore codicon"
-             :class="{
-             'codicon-chrome-restore': isMaximized,
-             'codicon-chrome-maximize': !isMaximized,
-             }"
-             @click="windowMaxRestore"
-         ></div>
-         <div
-             class="button close codicon codicon-chrome-close"
-             @click="windowClose"
-         ></div>
-       </div>
+      <div class="title">{{ title }}</div>
+      <div class="controls">
+        <div v-if="$slots.buttons">
+          <slot name="buttons"></slot>
+        </div>
+        <div v-if="resizable" class="button minimize codicon codicon-chrome-minimize" @click="windowMinimize"></div>
+        <div v-if="resizable" class="button max-restore codicon" :class="{
+          'codicon-chrome-restore': isMaximized,
+          'codicon-chrome-maximize': !isMaximized,
+        }" @click="windowMaxRestore"></div>
+        <div class="button close codicon codicon-chrome-close" @click="windowClose"></div>
+      </div>
     </div>
     <div class="container">
       <slot>Client Area</slot>
@@ -61,10 +54,11 @@ function windowClose() {
 </script>
 
 <style lang="scss" scoped>
-.window-frame{
+.window-frame {
   border: 1px solid var(--color-border);
   height: 100%;
   background: var(--color-background);
+
   .window-titlebar {
     color: var(--color-text);
     display: flex;
@@ -74,6 +68,7 @@ function windowClose() {
     user-select: none;
     --hover: #e6e6e6;
     --active: #cccccc;
+
     .title {
       padding: 8px 12px;
       font-size: 12px;
@@ -82,12 +77,14 @@ function windowClose() {
       overflow: hidden;
       white-space: nowrap;
     }
+
     .controls {
       height: 100%;
       margin-left: auto;
       justify-content: flex-end;
       align-items: start;
       display: flex;
+
       .button {
         height: 100%;
         width: 46px;
@@ -96,17 +93,21 @@ function windowClose() {
         justify-content: center;
         align-items: center;
         app-region: no-drag;
+
         &:hover {
           background: var(--hover);
         }
+
         &:active {
           background: var(--active);
         }
+
         &.close {
           &:hover {
             background: #c42c1b;
             color: rgba(255, 255, 255, 0.8);
           }
+
           &:active {
             background: #f1707a;
             color: #000;
@@ -115,13 +116,14 @@ function windowClose() {
       }
     }
   }
+
   .container {
     height: calc(100% - 32px);
     overflow: hidden;
   }
 }
 
-[data-theme='dark'] .window-titlebar  {
+[data-theme='dark'] .window-titlebar {
   --hover: #303030;
   --active: #454545;
 }
