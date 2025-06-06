@@ -1,7 +1,7 @@
 <template>
   <div class="dialog">
     <el-dialog model-value="true" :show-close="false" :modal="modal" :draggable="draggable"
-      :close-on-click-modal="false">
+      :close-on-click-modal="false" align-center @closed="emit('closed')">
       <template #header="{ close, titleId, titleClass }">
         <div class='titlebar'>
           <div v-if="$slots.icon">
@@ -33,6 +33,8 @@ defineProps({
     default: false,
   },
 });
+
+const emit = defineEmits(['closed']);
 </script>
 
 <style lang="scss" scoped>
