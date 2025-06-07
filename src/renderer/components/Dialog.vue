@@ -1,7 +1,15 @@
 <template>
   <div class="dialog">
-    <el-dialog model-value="true" :show-close="false" :modal="modal" :draggable="draggable"
-      :close-on-click-modal="false" align-center @closed="emit('closed')">
+    <el-dialog 
+      :model-value="modelValue" 
+      :show-close="false" 
+      :modal="modal" 
+      :draggable="draggable"
+      :close-on-click-modal="false" 
+      align-center 
+      @update:modelValue="emit('update:modelValue', $event)"
+      @closed="emit('closed')"
+    >
       <template #header="{ close, titleId, titleClass }">
         <div class='titlebar'>
           <div v-if="$slots.icon">
@@ -20,6 +28,10 @@
 
 <script setup>
 defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
   title: {
     type: String,
     default: 'title',
@@ -34,7 +46,7 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['closed']);
+const emit = defineEmits(['update:modelValue', 'closed']);
 </script>
 
 <style lang="scss" scoped>
