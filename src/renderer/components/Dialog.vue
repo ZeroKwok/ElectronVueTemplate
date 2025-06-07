@@ -58,6 +58,12 @@ const emit = defineEmits(['update:modelValue', 'closed']);
 <style lang="scss" scoped>
 :deep(.el-dialog) {
   border-radius: var(--window-border-radius);
+  display: flex;
+  flex-direction: column;
+
+  .el-dialog__body {
+    flex-grow: 1;
+  }
 }
 
 .titlebar {
@@ -102,5 +108,7 @@ const emit = defineEmits(['update:modelValue', 'closed']);
 
 .container {
   padding: 20px;
+  height: 100%;
+  overflow: hidden;
 }
 </style>
