@@ -12,9 +12,11 @@
     >
       <template #header="{ close, titleId, titleClass }">
         <div class='titlebar'>
-          <div v-if="$slots.icon">
-            <slot name="icon"></slot>
-          </div>
+          <slot name="icon">
+            <div class="icon">
+              <component v-if="icon" :is="icon" />
+            </div>
+          </slot>
           <div :id="titleId" :class="['title', titleClass]">{{ title }}</div>
           <div class="button close codicon codicon-chrome-close" @click="close"></div>
         </div>
@@ -44,6 +46,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  icon: {
+    type: Object, //as Component
+    default: null,
+  },
 });
 
 const emit = defineEmits(['update:modelValue', 'closed']);
@@ -52,18 +58,23 @@ const emit = defineEmits(['update:modelValue', 'closed']);
 <style lang="scss" scoped>
 :deep(.el-dialog) {
   border-radius: var(--window-border-radius);
-  ;
 }
 
 .titlebar {
   display: flex;
-  gap: 5px;
+  gap: 8px;
   height: 40px;
   align-items: center;
   padding-left: 10px;
 
+  .icon{
+    width: 20px;
+    height: 20px;
+  }
+
   .title {
     font-size: 14px;
+    font-weight: 400;
     margin-right: auto;
   }
 
