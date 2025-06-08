@@ -42,7 +42,7 @@
 
 <script setup>
 import { ref, computed, defineAsyncComponent } from 'vue'
-import Dialog from './Dialog.vue';
+import Dialog from '../Dialog.vue';
 
 const props = defineProps({
   modelValue: {
@@ -51,7 +51,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: 'title',
+    default: 'Title',
   },
   text: {
     type: String,
