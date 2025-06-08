@@ -57,9 +57,11 @@ const emit = defineEmits(['update:modelValue', 'closed']);
 
 <style lang="scss" scoped>
 :deep(.el-dialog) {
-  border-radius: var(--window-border-radius);
+  width: 600px;
+  height: 200px;
   display: flex;
   flex-direction: column;
+  border-radius: var(--window-border-radius);
 
   .el-dialog__body {
     flex-grow: 1;
