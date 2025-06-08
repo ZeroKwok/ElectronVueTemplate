@@ -1,9 +1,15 @@
 <template>
-  <Dialog :model-value="modelValue" :title="title" :draggable="true" :modal="true"
-    @update:modelValue="emit('update:modelValue', $event)" @closed="emit('closed')">
+  <Dialog 
+    :model-value="modelValue" 
+    :title="title" 
+    :draggable="true" 
+    :modal="true"
+    @update:modelValue="emit('update:modelValue', $event)" 
+    @closed="btnClick({key: 'close'}); emit('closed')"
+  >
     <template #icon>
       <div class="icon">
-        <component :is="iconComponent" :style="{ color: iconColor }" />
+        <component :is="iconComponent"/>
       </div>
     </template>
 
@@ -20,12 +26,12 @@
         </div>
       </slot>
 
-      <slot name="footer" :buttons="getButtons()" :click="btn=>emit('click', btn)">
+      <slot name="footer" :buttons="getButtons()" :click="btn=>btnClick(btn)">
         <div class="footer">
           <slot name="footer-prefix">
           </slot>
           <el-button class="button" v-for="(btn, index) in getButtons()" :key="index" :type="btn.type || ''"
-            :plain="btn.plain || false" :round="btn.round || false" @click="emit('click', btn)">
+            :plain="btn.plain || false" :round="btn.round || false" @click="btnClick(btn)">
             {{ btn.text }}
           </el-button>
         </div>
@@ -65,6 +71,14 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue', 'closed', 'click']);
+
+let isClicked = false;
+const btnClick = (btn) => {
+  if (isClicked) return;
+  isClicked = true;
+  emit('click', btn)
+  emit('update:modelValue', false);
+};
 
 import {
     CircleCheckFilled,
