@@ -62,6 +62,7 @@ const emit = defineEmits(['update:modelValue', 'closed']);
   display: flex;
   flex-direction: column;
   border-radius: var(--window-border-radius);
+  color: var(--color-text);
 
   .el-dialog__body {
     flex-grow: 1;

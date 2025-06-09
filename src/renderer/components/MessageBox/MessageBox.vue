@@ -142,11 +142,14 @@ const getButtons = () => {
 :deep(.el-dialog) {
   width: 600px;
   height: 207px;
+  padding: 0;
+  border-radius: var(--widget-border-radius);
 }
 
 .icon {
   width: 20px;
   height: 20px;
+  color: var(--color-text);
 }
 
 .dialog-content {
