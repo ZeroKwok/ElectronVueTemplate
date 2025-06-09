@@ -6,12 +6,13 @@ const createMessageBox = (options) => {
     document.body.appendChild(mountNode)
 
     return new Promise((resolve, reject) => {
+        const visible = ref(true)
         const app = createApp({
             setup() {
                 return () => h(MessageBox, {
-                    modelValue: true,
+                    modelValue: visible.value,
                     title: options?.title || 'Info',
-                    text: options.message,
+                    text: options.text,
                     type: options?.type || 'info',
                     buttons: options?.buttons || { confirm: 'Ok', cancel: 'Cancel' },
                     'onUpdate:modelValue': (val) => {
