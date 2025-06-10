@@ -163,11 +163,11 @@ const getButtons = () => {
     flex-grow: 1;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
 
     .body-icon {
-      width: 24px;
-      height: 24px;
+      width: 40px;
+      height: 40px;
     }
 
     .text {
