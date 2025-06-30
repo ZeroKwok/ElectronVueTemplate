@@ -5,10 +5,10 @@ import preset from './preset.js';
 import env from '../utils/env.js';
 
 class Settings extends Store {
-    constructor(options) {
+    constructor(options={}) {
         options = {
             name: 'settings',
-            defaults: preset.settings,
+            defaults: { settings: preset.settings },
             ...options,
         };
 
@@ -19,6 +19,19 @@ class Settings extends Store {
         }
         super(options);
         this.userData = undefined;
+    }
+
+    getAll(defaultValue={}) {
+        const data = this.store;
+        if (Object.keys(data).length === 0) {
+            return defaultValue;
+        }
+        return data;
+    }
+
+    setAll(data, userData={}) {
+        this.userData = userData;
+        this.store = data;
     }
 
     // Override Conf's set method
@@ -57,5 +70,6 @@ class Settings extends Store {
         };
     }
 };
+
 
 export default new Settings();
