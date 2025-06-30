@@ -32,6 +32,9 @@ logger.info(' - Electron:', process.versions.electron);
 logger.info(' - Chrome:', process.versions.chrome);
 logger.info(' - NODE_ENV:', process.env.NODE_ENV);
 logger.debug(' - Environment:', process.env);
+logger.debug(' - MAIN_WINDOW_VITE_DEV_SERVER_URL:', MAIN_WINDOW_VITE_DEV_SERVER_URL);
+logger.debug(' - MAIN_WINDOW_VITE_NAME:', MAIN_WINDOW_VITE_NAME);
+logger.debug(' - MAIN_DIRNAME:', __dirname);
 
 const pkg = getPackage();
 const createWindow = () => {
@@ -97,20 +100,25 @@ const createWindow = () => {
     });
   }
 
-  // Listen to the window maximize event
+  // Listen to the window maximize and minimize event
   mainWindow.on('maximize', () => {
     if (mainWindow.createOptions.transparent)
       mainWindow.setResizable(false);
-
     cache.set("shared.window.maximized", true);
   });
   mainWindow.on('unmaximize', () => {
     if (mainWindow.createOptions.transparent)
       mainWindow.setResizable(true);
-
     cache.set("shared.window.maximized", false);
   });
+  mainWindow.on('minimize', () => {
+    cache.set("shared.window.minimized", true);
+  });
+  mainWindow.on('restore', () => {
+    cache.set("shared.window.minimized", false);
+  });
   cache.set("shared.window.maximized", mainWindow.isMaximized());
+  cache.set("shared.window.minimized", mainWindow.isMinimized());
   cache.set("shared.window.shouldShowExitConfirmation", true);
 
   // Listen to the window close event
