@@ -41,6 +41,13 @@ const createWindow = () => {
     defaultHeight: 600
   });
 
+  const createOptions = {
+    show: true,
+    frame: false,
+    resizable: true,
+    transparent: settings.get('settings.roundedWindow', true),
+  };
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     x: mainWindowState.x,
@@ -49,9 +56,10 @@ const createWindow = () => {
     height: mainWindowState.height,
     minWidth: 450,
     minHeight: 300,
-    frame: false,
-    resizable: true,
-    transparent: settings.get('settings.roundedWindow', false),
+    show: createOptions.show,
+    frame: createOptions.frame,
+    resizable: createOptions.resizable,
+    transparent: createOptions.transparent,
     backgroundColor: '#00000000',
     icon: path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/assets/icon.png`),
     webPreferences: {
@@ -62,11 +70,7 @@ const createWindow = () => {
     }
   });
 
-  mainWindow.createOptions = {
-    frame: false,
-    resizable: true,
-    transparent: settings.get('settings.roundedWindow', false),
-  }
+  mainWindow.createOptions = createOptions;
   mainWindowState.manage(mainWindow);
 
   // Hide menu bar on Microsoft Windows and Linux
@@ -81,6 +85,17 @@ const createWindow = () => {
 
   // Cache the mainWindow
   cache.set("mainWindow", mainWindow)
+
+  // Note: When `show: false` and `transparent: true` are set together,
+  // the window may display a white background due to an unfixed Electron issue:
+  // https://github.com/electron/electron/issues/34835
+  //
+  // Show the window when it is ready
+  if (createOptions.show) {
+    mainWindow.once('ready-to-show', () => {
+      mainWindow.show();
+    });
+  }
 
   // Listen to the window maximize event
   mainWindow.on('maximize', () => {
